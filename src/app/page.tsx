@@ -1,11 +1,18 @@
 import Link from "next/link";
 import {
+  Anchor,
+  ArrowRight,
+  Briefcase,
   Facebook,
+  Globe,
   Instagram,
+  Leaf,
   Linkedin,
   Mail,
   MapPin,
   Phone,
+  Ship,
+  Users,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,23 +32,20 @@ import {
 import { MapboxMap } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
 
+// Local Assets
 const imgFinalHeroSlideshow = "/images/figma/hero-slideshow.png";
 const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
 const imgFrame39847 = "/images/figma/services-bg.png";
 const imgRectangle4136 = "/images/figma/scenic-bay.png";
 const imgRectangle4137 = "/images/figma/harbor-view.png";
 const imgRectangle4138 = "/images/figma/aerial-coastline.png";
-const imgArrowRightSvgrepoCom =
-  "http://localhost:3845/assets/1a63df9b34aae05bd6591fd98be2b587689bb979.svg";
-const imgBoatSvgrepoCom = "/images/figma/icon-boat.png";
-const imgBoatSvgrepoCom1 =
-  "http://localhost:3845/assets/42ab8f2e692d6c69fc33a3588c0930057d1db881.svg";
-const imgVip2Fill = "/images/figma/icon-cultural-experts.png";
-const imgVip2Fill1 = "/images/figma/icon-vip.png";
-const imgLeafSvgrepoCom = "/images/figma/icon-sustainable.png";
-const imgMapSvgrepoCom = "/images/figma/icon-land-programs.png";
-const imgBoatSvgrepoCom2 =
-  "http://localhost:3845/assets/f205a410959c38b8a512cfe1e45890b14b288386.svg";
+
+// Icons (Local PNGs)
+const iconBoat = "/images/figma/icon-boat.png";
+const iconVip = "/images/figma/icon-vip.png";
+const iconCultural = "/images/figma/icon-cultural-experts.png";
+const iconSustainable = "/images/figma/icon-sustainable.png";
+const iconLand = "/images/figma/icon-land-programs.png";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -112,81 +116,93 @@ const distinctionSlides = [
   },
 ];
 
-const serviceCardsRowOne = [
+type ServiceCard = {
+  titleLines: string[];
+  icon: string | React.ComponentType<{ className?: string }>;
+  description: string;
+  bullets?: string[];
+};
+
+const serviceCardsRowOne: ServiceCard[] = [
   {
     titleLines: ["Shore", "Excursions"],
-    icon: imgBoatSvgrepoCom,
+    icon: iconBoat,
     description:
       "Immersive shore experiences curated with local experts and tailored guest flows.",
   },
   {
     titleLines: ["VIP &", "Concierge"],
-    icon: imgVip2Fill1,
+    icon: iconVip,
     description:
       "Discreet, white-glove logistics with private guides and priority access.",
   },
   {
     titleLines: ["Port", "Services"],
-    icon: imgBoatSvgrepoCom2,
+    icon: Anchor, // Using Lucide icon as replacement
     description:
       "Comprehensive embarkation and disembarkation support across Greek ports.",
     bullets: ["Meet & Greet", "Luggage Handling", "Port Transfers", "Check-in"],
   },
   {
     titleLines: ["Cultural", "Experts"],
-    icon: imgVip2Fill,
+    icon: iconCultural,
     description:
       "Licensed storytellers and archaeologists bringing Greece's heritage to life.",
   },
 ];
 
-const serviceCardsRowTwo = [
+const serviceCardsRowTwo: ServiceCard[] = [
   {
     titleLines: ["Sustainable", "Tourism"],
-    icon: imgLeafSvgrepoCom,
+    icon: iconSustainable,
     description:
       "Low-impact itineraries and community partnerships aligned with Travelife.",
   },
   {
     titleLines: ["Land", "Programs"],
-    icon: imgMapSvgrepoCom,
+    icon: iconLand,
     description:
       "Pre- and post-cruise journeys with seamless ground handling nationwide.",
   },
   {
     titleLines: ["Boat & Yacht", "Charters"],
-    icon: imgBoatSvgrepoCom1,
+    icon: Ship, // Using Lucide icon as replacement
     description:
       "Private yachts, tenders, and bespoke maritime experiences with premium crews.",
   },
 ];
 
 const wrap =
-  "mx-auto w-full max-w-[1780px] px-[24px] sm:px-[40px] lg:px-[40px] min-[1780px]:px-0";
+  "mx-auto w-full max-w-[1780px] px-[24px] sm:px-[40px] lg:px-[60px] min-[1780px]:px-0";
 
 export default function Home() {
   return (
-    <div className="bg-white text-[#33305e] overflow-x-hidden">
+    <div className="bg-white text-[#33305e] overflow-x-hidden selection:bg-[#96e0d9] selection:text-[#33305e]">
+      {/* Hero Section */}
       <section id="home" className="relative">
         <div
-          className={`${wrap} relative min-h-[720px] lg:min-h-screen min-[1780px]:min-h-[968px]`}
+          className={`${wrap} relative min-h-[720px] lg:min-h-screen min-[1780px]:min-h-[968px] pt-6 lg:pt-8`}
         >
-          <header className="flex items-start justify-between pt-[3px]">
-            <img
-              src={imgExcursionsGreeceLogoWhite1}
-              alt="Excursions Greece"
-              className="h-[72px] w-[72px] object-contain sm:h-[96px] sm:w-[96px] lg:h-[179px] lg:w-[179px]"
-            />
-            <nav className="hidden items-center gap-[49px] text-[18px] font-medium lg:flex lg:text-[24px] lg:leading-[80px]">
+          {/* Header / Nav */}
+          <header className="flex items-center justify-between">
+            <Link href="/" className="block">
+              <img
+                src={imgExcursionsGreeceLogoWhite1}
+                alt="Excursions Greece"
+                className="h-[60px] w-auto sm:h-[80px] lg:h-[120px] object-contain"
+              />
+            </Link>
+            
+            <nav className="hidden items-center gap-[40px] xl:gap-[60px] text-[16px] font-medium lg:flex lg:text-[18px]">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  aria-current={item.label === "Home" ? "page" : undefined}
                   className={cn(
-                    "transition-colors hover:text-[#51d2c6]",
+                    "relative py-2 transition-colors hover:text-[#51d2c6]",
+                    "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#51d2c6] after:transition-all after:duration-300 hover:after:w-full",
                     item.label === "Home"
-                      ? "font-extrabold text-[#51d2c6]"
+                      ? "font-bold text-[#51d2c6]"
                       : "text-[#33305e]"
                   )}
                 >
@@ -196,31 +212,38 @@ export default function Home() {
               <Button
                 asChild
                 variant="outline"
-                className="h-[44px] rounded-full border-[#33305e]/20 px-5 text-[18px] font-semibold text-[#33305e] transition-colors hover:border-[#51d2c6] hover:text-[#51d2c6]"
+                className="h-[48px] rounded-full border-[#33305e]/20 px-8 text-[16px] font-semibold text-[#33305e] transition-all hover:border-[#51d2c6] hover:bg-[#51d2c6] hover:text-white"
               >
                 <a href={navCta.href}>{navCta.label}</a>
               </Button>
             </nav>
+
+            {/* Mobile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  size="sm"
-                  className="rounded-full border-[#33305e]/20 px-4 py-2 text-sm font-semibold text-[#33305e] lg:hidden"
+                  size="icon"
+                  className="rounded-full border-[#33305e]/20 lg:hidden"
                 >
-                  Menu
+                  <span className="sr-only">Menu</span>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="h-0.5 w-5 bg-[#33305e]"></span>
+                    <span className="h-0.5 w-5 bg-[#33305e]"></span>
+                    <span className="h-0.5 w-5 bg-[#33305e]"></span>
+                  </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-56 p-2">
                 {navItems.map((item) => (
-                  <DropdownMenuItem key={item.label} asChild>
-                    <Link href={item.href} className="w-full">
+                  <DropdownMenuItem key={item.label} asChild className="p-3 text-base">
+                    <Link href={item.href}>
                       {item.label}
                     </Link>
                   </DropdownMenuItem>
                 ))}
-                <DropdownMenuItem asChild>
-                  <a href={navCta.href} className="w-full font-semibold">
+                <DropdownMenuItem asChild className="p-3">
+                  <a href={navCta.href} className="w-full font-bold text-[#51d2c6]">
                     {navCta.label}
                   </a>
                 </DropdownMenuItem>
@@ -228,323 +251,391 @@ export default function Home() {
             </DropdownMenu>
           </header>
 
-          <div>
-            <div className="relative lg:grid lg:grid-cols-2 lg:gap-6 lg:h-[calc(100vh-220px)] min-[1780px]:grid-cols-[880px_879px] min-[1780px]:gap-[20px] min-[1780px]:h-[805px]">
+          {/* Hero Content */}
+          <div className="mt-10 lg:mt-16 pb-12">
+            <div className="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:h-[calc(100vh-220px)] min-[1780px]:grid-cols-[1fr_1fr] min-[1780px]:gap-[40px] min-[1780px]:h-[805px]">
+              
+              {/* Left Column: Text & Map */}
               <div className="relative flex flex-col lg:h-full">
-                <h1 className="text-right font-[var(--font-syne)] text-[32px] font-bold leading-[42px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700 lg:text-[40px] lg:leading-[46px]">
+                <h1 className="text-left lg:text-right font-[var(--font-syne)] text-[42px] font-bold leading-[1.1] tracking-tight motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700 sm:text-[56px] lg:text-[72px] xl:text-[80px]">
                   Luxury Shore
                   <br />
-                  Experiences
+                  <span className="text-[#51d2c6]">Experiences</span>
                 </h1>
-                <div className="mt-[28px] flex items-start justify-between gap-6 text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-                  <p className="max-w-[520px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:delay-100 motion-safe:duration-700">
-                    Curated by Greece&apos;s
-                    <br />
-                    Most Trusted &amp; Leading DMC
+                
+                <div className="mt-[32px] flex flex-col sm:flex-row items-start justify-between gap-8 text-[18px] leading-[1.6] sm:text-[22px] lg:text-[26px]">
+                  <p className="max-w-[500px] text-[#33305e]/90 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:delay-100 motion-safe:duration-700">
+                    Curated by Greece&apos;s most trusted &amp; leading Destination Management Company.
                   </p>
-                  <p className="text-right font-[var(--font-sulphur)] text-[20px] leading-[24px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:delay-200 motion-safe:duration-700 lg:text-[24px] lg:leading-[111px]">
-                    since 2013
-                  </p>
+                  <div className="flex flex-col items-end motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:delay-200 motion-safe:duration-700">
+                     <span className="font-[var(--font-sulphur)] text-[24px] italic text-[#33305e]/60">est.</span>
+                     <span className="font-[var(--font-syne)] text-[32px] font-bold">2013</span>
+                  </div>
                 </div>
-                <div className="mt-[22px] overflow-hidden bg-[#96e0d9] lg:mt-auto">
-                  <MapboxMap className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,45vh,575px)] min-[1780px]:h-[575px]" />
-                  <button className="group absolute bottom-[22px] left-[22px] flex h-[56px] items-center gap-4 bg-white px-6 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]">
-                    Explore Routes
-                    <img
-                      src={imgArrowRightSvgrepoCom}
-                      alt="Arrow"
-                      className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </button>
+
+                <div className="mt-[40px] relative overflow-hidden rounded-2xl bg-[#96e0d9]/10 lg:mt-auto shadow-2xl shadow-[#33305e]/5">
+                  <MapboxMap className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,40vh,500px)] min-[1780px]:h-[500px]" />
+                  
+                  <Link href="#services" className="group absolute bottom-[24px] left-[24px] z-10">
+                     <button className="flex h-[56px] items-center gap-4 rounded-full bg-white pl-6 pr-4 text-[18px] font-bold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.15)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                      Explore Routes
+                      <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#51d2c6] text-white transition-transform duration-300 group-hover:rotate-[-45deg]">
+                        <ArrowRight className="h-5 w-5" />
+                      </span>
+                    </button>
+                  </Link>
                 </div>
               </div>
 
-              <div className="relative mt-8 overflow-hidden bg-[#96e0d9] lg:mt-0 lg:h-full">
+              {/* Right Column: Hero Image */}
+              <div className="relative mt-8 overflow-hidden rounded-2xl bg-[#96e0d9] lg:mt-0 lg:h-full shadow-2xl shadow-[#33305e]/10 group">
                 <img
                   src={imgFinalHeroSlideshow}
                   alt="Aegean waters"
-                  className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-[4000ms] hover:scale-105"
+                  className="absolute inset-0 h-full w-full object-cover opacity-90 transition-transform duration-[8000ms] ease-linear group-hover:scale-110"
                 />
-                <Button
-                  asChild
-                  className="group absolute bottom-[22px] left-[22px] h-[56px] gap-4 rounded-none bg-white px-6 py-3 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]"
-                >
-                  <Link href="#contact">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#33305e]/40 to-transparent" />
+                
+                <Link href="#contact" className="absolute bottom-[24px] left-[24px] z-10">
+                  <Button
+                    className="h-[64px] gap-6 rounded-none bg-white px-8 text-[20px] font-bold text-[#33305e] shadow-lg transition-all hover:-translate-y-1 hover:bg-white hover:text-[#51d2c6]"
+                  >
                     Contact Us
-                    <img
-                      src={imgArrowRightSvgrepoCom}
-                      alt="Arrow"
-                      className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
-                </Button>
+                    <ArrowRight className="h-6 w-6" />
+                  </Button>
+                </Link>
               </div>
+
             </div>
           </div>
         </div>
       </section>
 
-      <section className={`${wrap} pb-10 pt-6 lg:pt-[24px]`}>
-        <p className="max-w-[1403px] text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-          Where every journey unfolds as a story of elegance and discovery across
-          Greece&apos;s storied ports, our bespoke programs serve the world&apos;s most
-          distinguished cruise lines.
-        </p>
-      </section>
-
-      <section className="bg-[#33305e] py-[36px]">
-        <div className={`${wrap} grid border-y border-white/40 md:grid-cols-3`}>
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`py-6 text-center ${
-                index < stats.length - 1 ? "md:border-r md:border-white/40" : ""
-              }`}
-            >
-              <div className="font-[var(--font-syne)] text-[32px] font-semibold text-[#96e0d9] sm:text-[36px] lg:text-[40px]">
-                {stat.value}
-              </div>
-              <div className="mt-3 text-[16px] text-white sm:text-[18px] lg:text-[20px]">
-                {stat.label}
-              </div>
-            </div>
-          ))}
+      {/* Intro Text */}
+      <section className={`${wrap} pb-16 pt-12 lg:pt-[60px]`}>
+        <div className="relative pl-6 lg:pl-0 border-l-4 border-[#51d2c6] lg:border-l-0">
+            <p className="max-w-[1400px] font-[var(--font-syne)] text-[28px] font-medium leading-[1.4] sm:text-[36px] lg:text-[42px] lg:leading-[1.3] text-[#33305e]">
+            Where every journey unfolds as a story of elegance and discovery. 
+            Our bespoke programs serve the world&apos;s most distinguished cruise lines across Greece&apos;s storied ports.
+            </p>
         </div>
       </section>
 
-      <section id="company" className={`${wrap} py-14`}>
-        <h2 className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700 sm:text-[32px] lg:text-[40px] lg:leading-[46px]">
-          Chosen by the World’s
-          <br />
-          Finest Voyages
-        </h2>
-        <div className="mt-6 border-t border-[#33305e]/30">
-          <div className="grid grid-cols-2 text-center text-[20px] font-light leading-[50px] text-[#33305e] sm:grid-cols-3 lg:grid-cols-5 lg:text-[40px] lg:leading-[80px]">
-            {logoRowOne.map((logo) => (
-              <div key={logo}>
-                <span className="inline-flex w-full items-center justify-center px-4 py-1 transition-colors duration-300 hover:bg-[#51d2c6] hover:text-white">
+      {/* Stats Section */}
+      <section className="bg-[#33305e] py-[60px] text-white">
+        <div className={`${wrap}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 md:divide-x md:divide-white/20">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center justify-center p-4 text-center">
+                <div className="font-[var(--font-syne)] text-[48px] font-bold text-[#96e0d9] sm:text-[56px] lg:text-[64px] leading-none">
+                  {stat.value}
+                </div>
+                <div className="mt-4 text-[18px] uppercase tracking-widest text-white/80 sm:text-[20px]">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section id="company" className={`${wrap} py-20 lg:py-28`}>
+        <div className="mb-12 flex flex-col items-center text-center">
+            <span className="mb-4 inline-block rounded-full bg-[#51d2c6]/10 px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-[#51d2c6]">
+                Trusted Partners
+            </span>
+            <h2 className="font-[var(--font-syne)] text-[32px] font-bold leading-[1.2] sm:text-[40px] lg:text-[56px]">
+            Chosen by the World’s
+            <br />
+            Finest Voyages
+            </h2>
+        </div>
+        
+        <div className="mt-8 border-y border-[#33305e]/10 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-12 gap-x-8 text-center">
+            {[...logoRowOne, ...logoRowTwo].map((logo, i) => (
+              <div key={`${logo}-${i}`} className="flex items-center justify-center">
+                <span className="font-[var(--font-syne)] text-[24px] font-bold text-[#33305e]/40 transition-colors duration-300 hover:text-[#33305e] cursor-default">
                   {logo}
                 </span>
               </div>
             ))}
           </div>
-          <div className="border-t border-[#33305e]/30" />
-          <div className="grid grid-cols-2 text-center text-[20px] font-light leading-[50px] text-[#33305e] sm:grid-cols-3 lg:grid-cols-5 lg:text-[40px] lg:leading-[80px]">
-            {logoRowTwo.map((logo) => (
-              <div key={logo}>
-                <span className="inline-flex w-full items-center justify-center px-4 py-1 transition-colors duration-300 hover:bg-[#51d2c6] hover:text-white">
-                  {logo}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-[#33305e]/30" />
         </div>
       </section>
 
-      <section id="services" className={`${wrap} pb-8`}>
-        <h2 className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] sm:text-[32px] lg:text-[40px] lg:leading-[46px]">
-          Bespoke Experiences
-          <br />
-          Throughout Greece
-        </h2>
-      </section>
-
-      <section className={`${wrap} pb-16`}>
-        <div className="relative overflow-hidden bg-[#96e0d9] px-6 py-10 sm:px-10 lg:min-h-[1094px] lg:px-[80px] lg:py-[48px]">
-          <img
-            src={imgFrame39847}
-            alt="Greek coastline"
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
-          />
-          <div className="relative mx-auto grid gap-6 lg:max-w-[1620px] lg:grid-cols-4 lg:gap-[36px]">
-            {serviceCardsRowOne.map((card) => (
-              <div
-                key={card.titleLines.join(" ")}
-                tabIndex={0}
-                className="group relative cursor-pointer overflow-hidden bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-[#33305e] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#51d2c6] lg:h-[397px]"
-              >
-                <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                  {card.titleLines.map((line, index) => (
-                    <span key={line}>
-                      {line}
-                      {index < card.titleLines.length - 1 ? <br /> : null}
-                    </span>
-                  ))}
-                </h3>
-                <div className="mt-4 space-y-3 text-[16px] leading-[22px] text-[#33305e]/80 opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white/80 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:text-white/80">
-                  <p>{card.description}</p>
-                  {card.bullets ? (
-                    <ul className="space-y-1 text-[15px] leading-[20px]">
-                      {card.bullets.map((bullet) => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-                <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                  <img
-                    src={card.icon}
-                    alt={`${card.titleLines.join(" ")} icon`}
-                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="relative mx-auto mt-6 grid gap-6 lg:max-w-[1206px] lg:grid-cols-3 lg:gap-[36px]">
-            {serviceCardsRowTwo.map((card) => (
-              <div
-                key={card.titleLines.join(" ")}
-                tabIndex={0}
-                className="group relative cursor-pointer overflow-hidden bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-[#33305e] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#51d2c6] lg:h-[397px]"
-              >
-                <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                  {card.titleLines.map((line, index) => (
-                    <span key={line}>
-                      {line}
-                      {index < card.titleLines.length - 1 ? <br /> : null}
-                    </span>
-                  ))}
-                </h3>
-                <div className="mt-4 space-y-3 text-[16px] leading-[22px] text-[#33305e]/80 opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white/80 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:text-white/80">
-                  <p>{card.description}</p>
-                </div>
-                <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                  <img
-                    src={card.icon}
-                    alt={`${card.titleLines.join(" ")} icon`}
-                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="relative mt-8 flex items-center justify-center border-y border-white/50 py-2">
-            <Button
-              asChild
-              className="group h-[56px] gap-4 rounded-none bg-white px-6 text-[20px] font-semibold text-[#33305e] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]"
-            >
-              <Link href="#services">
-                View All Services
-                <img
-                  src={imgArrowRightSvgrepoCom}
-                  alt="Arrow"
-                  className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className={`${wrap} pb-6`}>
-        <p className="max-w-[1319px] text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-          At Excursions Greece, excellence is not an aspiration, it is a standard
-          refined over decades of service to the world&apos;s most distinguished
-          cruise lines.
-        </p>
-        <p className="mt-6 max-w-[1102px] text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-          What sets us apart is our relentless attention to detail and our
-          commitment to creating seamless experiences at every port of call.
-        </p>
-      </section>
-
-      <section className={`${wrap} py-14`}>
-        <h2 className="font-[var(--font-syne)] text-[28px] font-bold lg:text-[40px]">
-          Our Distinction
-        </h2>
-        <Carousel
-          className="relative mt-10"
-          opts={{ align: "center", loop: true }}
-        >
-          <CarouselContent className="items-stretch">
-            {distinctionSlides.map((slide) => (
-              <CarouselItem
-                key={slide.title}
-                className="basis-full sm:basis-1/2 lg:basis-1/3"
-              >
-                <div className="flex h-full items-center justify-center">
-                  <div className="relative flex h-[397px] w-full max-w-[378px] flex-col items-center justify-center gap-6 bg-[#96e0d9] px-6 text-center text-white transition-transform duration-300 hover:-translate-y-1">
-                    <div className="w-full border-y border-white/60 py-4">
-                      <p className="font-[var(--font-syne)] text-[28px] font-bold leading-[36px] lg:text-[32px] lg:leading-[42px]">
-                        {slide.title}
-                      </p>
-                    </div>
-                    <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[26px]">
-                      {slide.description}
-                    </p>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious
-            variant="ghost"
-            className="hidden lg:flex !left-[-8px] !h-[60px] !w-[55px] !rounded-none text-[#33305e] hover:bg-[#33305e]/10 [&>svg]:size-7"
-          />
-          <CarouselNext
-            variant="ghost"
-            className="hidden lg:flex !right-[-8px] !h-[60px] !w-[55px] !rounded-none text-[#33305e] hover:bg-[#33305e]/10 [&>svg]:size-7"
-          />
-        </Carousel>
-      </section>
-
-      <section id="destinations" className={`${wrap} pb-16`}>
-        <div className="grid items-center gap-10 lg:grid-cols-[665px_1fr] lg:gap-[36px]">
-          <div>
-            <img
-              src={imgBoatSvgrepoCom2}
-              alt="Boat icon"
-              className="h-[60px] w-[53px] lg:h-[79px] lg:w-[70px]"
-            />
-            <p className="mt-6 text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-              Each journey we design reflects the heritage, precision, and trust
-              that have earned us our reputation as Greece&apos;s most trusted and
-              leading DMC.
+      {/* Services Section */}
+      <section id="services" className="bg-[#f8f9fa] py-20 lg:py-32">
+        <div className={wrap}>
+          <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <h2 className="font-[var(--font-syne)] text-[36px] font-bold leading-[1.1] sm:text-[48px] lg:text-[64px]">
+              Bespoke Experiences
+              <br />
+              <span className="text-[#51d2c6]">Throughout Greece</span>
+            </h2>
+            <p className="max-w-md text-lg text-[#33305e]/70 pb-2">
+                From private yacht charters to exclusive cultural tours, we craft moments that linger in memory.
             </p>
           </div>
-          <div className="grid gap-[18px] sm:grid-cols-3 lg:gap-[31px]">
+
+          <div className="relative overflow-hidden rounded-[32px] bg-[#96e0d9] px-6 py-10 sm:px-10 lg:px-[60px] lg:py-[80px]">
             <img
-              src={imgRectangle4136}
-              alt="Scenic bay"
-              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
+              src={imgFrame39847}
+              alt="Greek coastline"
+              className="absolute inset-0 h-full w-full object-cover opacity-60 mix-blend-multiply"
             />
-            <img
-              src={imgRectangle4138}
-              alt="Aerial coastline"
-              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
-            />
-            <img
-              src={imgRectangle4137}
-              alt="Harbor view"
-              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
-            />
+            
+            {/* Row 1 */}
+            <div className="relative mx-auto grid gap-6 lg:gap-8 lg:grid-cols-4">
+              {serviceCardsRowOne.map((card, idx) => (
+                <div
+                  key={idx}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(51,48,94,0.15)] lg:min-h-[420px]"
+                >
+                  <div>
+                    <div className="mb-6 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#f0fdfc] text-[#51d2c6] transition-colors group-hover:bg-[#33305e] group-hover:text-white">
+                        {typeof card.icon === 'string' ? (
+                            <img src={card.icon} alt="" className="h-8 w-8 object-contain" />
+                        ) : (
+                            <card.icon className="h-8 w-8" />
+                        )}
+                    </div>
+                    <h3 className="font-[var(--font-syne)] text-[28px] font-bold leading-[1.1] text-[#33305e]">
+                        {card.titleLines.join(" ")}
+                    </h3>
+                  </div>
+                  
+                  <div className="mt-auto pt-8">
+                     <p className="text-[16px] leading-relaxed text-[#33305e]/80">
+                        {card.description}
+                     </p>
+                     {card.bullets && (
+                         <ul className="mt-4 space-y-1">
+                             {card.bullets.map(b => (
+                                 <li key={b} className="flex items-center gap-2 text-sm font-medium text-[#51d2c6]">
+                                     <span className="h-1.5 w-1.5 rounded-full bg-[#51d2c6]" />
+                                     {b}
+                                 </li>
+                             ))}
+                         </ul>
+                     )}
+                  </div>
+
+                   <div className="absolute right-6 top-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <ArrowRight className="h-6 w-6 text-[#33305e] -rotate-45" />
+                   </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Row 2 */}
+            <div className="relative mx-auto mt-6 lg:mt-8 grid gap-6 lg:gap-8 lg:grid-cols-3">
+              {serviceCardsRowTwo.map((card, idx) => (
+                <div
+                  key={idx}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(51,48,94,0.15)] lg:min-h-[380px]"
+                >
+                   <div>
+                    <div className="mb-6 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#f0fdfc] text-[#51d2c6] transition-colors group-hover:bg-[#33305e] group-hover:text-white">
+                        {typeof card.icon === 'string' ? (
+                            <img src={card.icon} alt="" className="h-8 w-8 object-contain" />
+                        ) : (
+                            <card.icon className="h-8 w-8" />
+                        )}
+                    </div>
+                    <h3 className="font-[var(--font-syne)] text-[28px] font-bold leading-[1.1] text-[#33305e]">
+                        {card.titleLines.join(" ")}
+                    </h3>
+                  </div>
+                  <div className="mt-auto pt-8">
+                     <p className="text-[16px] leading-relaxed text-[#33305e]/80">
+                        {card.description}
+                     </p>
+                  </div>
+                   <div className="absolute right-6 top-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <ArrowRight className="h-6 w-6 text-[#33305e] -rotate-45" />
+                   </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative mt-12 flex justify-center">
+              <Button
+                asChild
+                className="h-[64px] rounded-full bg-[#33305e] px-10 text-[18px] font-bold text-white shadow-xl transition-all hover:bg-[#33305e]/90 hover:scale-105"
+              >
+                <Link href="#contact">
+                  Plan Your Experience
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" className="bg-[#33305e] text-white">
-        <div className={`${wrap} py-12`}>
-          <div className="border-y border-white/50 py-6 text-center">
-            <h2 className="font-[var(--font-syne)] text-[28px] font-bold sm:text-[32px] lg:text-[40px]">
+      {/* Manifesto */}
+      <section className={`${wrap} py-24 text-center`}>
+        <div className="mx-auto max-w-4xl">
+             <Anchor className="mx-auto h-12 w-12 text-[#51d2c6] mb-8" />
+            <p className="font-[var(--font-syne)] text-[28px] leading-[1.6] sm:text-[36px] lg:text-[44px] text-[#33305e]">
+            &ldquo;Excellence is not an aspiration, it is a standard refined over decades.&rdquo;
+            </p>
+            <p className="mt-8 text-[18px] leading-relaxed text-[#33305e]/70 lg:text-[22px]">
+            What sets us apart is our relentless attention to detail and our
+            commitment to creating seamless experiences at every port of call.
+            </p>
+        </div>
+      </section>
+
+      {/* Carousel Section */}
+      <section className="bg-[#f8f9fa] py-24">
+        <div className={wrap}>
+            <div className="mb-12 flex items-center justify-between">
+                <h2 className="font-[var(--font-syne)] text-[32px] font-bold lg:text-[48px]">
+                Our Distinction
+                </h2>
+                <div className="flex gap-2">
+                     {/* Custom Carousel Navigation placeholders if needed */}
+                </div>
+            </div>
+            
+            <Carousel
+            className="w-full"
+            opts={{ align: "start", loop: true }}
+            >
+            <CarouselContent className="-ml-4">
+                {distinctionSlides.map((slide) => (
+                <CarouselItem
+                    key={slide.title}
+                    className="pl-4 md:basis-1/2 lg:basis-1/3"
+                >
+                    <div className="group h-full rounded-2xl bg-white p-8 shadow-sm transition-all hover:shadow-xl border border-transparent hover:border-[#51d2c6]/20">
+                    <div className="mb-6 h-1 w-12 bg-[#51d2c6]" />
+                    <h3 className="mb-4 font-[var(--font-syne)] text-[24px] font-bold leading-tight">
+                        {slide.title}
+                    </h3>
+                    <p className="text-[#33305e]/70 leading-relaxed">
+                        {slide.description}
+                    </p>
+                    </div>
+                </CarouselItem>
+                ))}
+            </CarouselContent>
+            <div className="mt-8 flex justify-end gap-4">
+                <CarouselPrevious className="static translate-y-0 hover:bg-[#51d2c6] hover:text-white" />
+                <CarouselNext className="static translate-y-0 hover:bg-[#51d2c6] hover:text-white" />
+            </div>
+            </Carousel>
+        </div>
+      </section>
+
+      {/* Destinations Preview */}
+      <section id="destinations" className={`${wrap} py-24`}>
+        <div className="grid gap-12 lg:grid-cols-[400px_1fr] lg:gap-20">
+          <div className="flex flex-col justify-center">
+            <div className="mb-8 flex h-[80px] w-[80px] items-center justify-center rounded-2xl bg-[#f0fdfc]">
+                 <MapPin className="h-10 w-10 text-[#51d2c6]" />
+            </div>
+            <h2 className="mb-6 font-[var(--font-syne)] text-[40px] font-bold leading-[1.1]">
+                Heritage &<br/>
+                Precision
+            </h2>
+            <p className="text-[18px] leading-relaxed text-[#33305e]/80">
+              Each journey we design reflects the trust that has earned us our reputation as Greece&apos;s most leading DMC.
+            </p>
+            <Button variant="link" className="mt-8 w-fit px-0 text-[18px] font-bold text-[#33305e] hover:text-[#51d2c6]">
+                Explore All Destinations <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+          
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="group overflow-hidden rounded-2xl">
+                <img
+                src={imgRectangle4136}
+                alt="Scenic bay"
+                className="h-[300px] w-full object-cover transition-transform duration-700 group-hover:scale-110 lg:h-[450px]"
+                />
+            </div>
+            <div className="group overflow-hidden rounded-2xl mt-8 sm:mt-12">
+                <img
+                src={imgRectangle4138}
+                alt="Aerial coastline"
+                className="h-[300px] w-full object-cover transition-transform duration-700 group-hover:scale-110 lg:h-[450px]"
+                />
+            </div>
+            <div className="group overflow-hidden rounded-2xl">
+                <img
+                src={imgRectangle4137}
+                alt="Harbor view"
+                className="h-[300px] w-full object-cover transition-transform duration-700 group-hover:scale-110 lg:h-[450px]"
+                />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer / Contact */}
+      <section id="contact" className="bg-[#33305e] text-white rounded-t-[40px] overflow-hidden">
+        <div className={`${wrap} py-20`}>
+          <div className="mb-16 border-b border-white/10 pb-12 text-center">
+            <span className="mb-6 block font-[var(--font-sulphur)] text-[20px] uppercase tracking-widest text-[#96e0d9]">
+                Sustainability
+            </span>
+            <h2 className="font-[var(--font-syne)] text-[36px] font-bold sm:text-[48px]">
               Travelife Certified Partner
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1fr_1.2fr] lg:gap-[80px]">
+          <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-24">
+            {/* Contact Info */}
+            <div className="space-y-8">
+               <img
+                src={imgExcursionsGreeceLogoWhite1}
+                alt="Excursions Greece"
+                className="h-[80px] w-auto brightness-0 invert"
+              />
+              <p className="max-w-md text-[18px] text-white/70">
+                  Leading the way in luxury shore excursions and destination management across Greece since 2013.
+              </p>
+              
+              <div className="space-y-4">
+                 <a href="mailto:info@excursionsgreece.com" className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5">
+                        <Mail className="h-5 w-5" />
+                    </div>
+                    info@excursionsgreece.com
+                 </a>
+                 <a href="tel:+302104567890" className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5">
+                        <Phone className="h-5 w-5" />
+                    </div>
+                    +30 210 456 7890
+                 </a>
+                 <div className="flex items-start gap-4 text-[18px] font-medium">
+                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 shrink-0">
+                        <MapPin className="h-5 w-5" />
+                    </div>
+                    <span>
+                        123 Marina Boulevard<br/>
+                        Piraeus, Greece 18537
+                    </span>
+                 </div>
+              </div>
+            </div>
+
+            {/* Links Columns */}
             <div>
-              <h3 className="font-[var(--font-syne)] text-[28px] font-bold text-[#96e0d9] lg:text-[36px]">
+              <h3 className="font-[var(--font-syne)] text-[24px] font-bold text-[#96e0d9]">
                 Company
               </h3>
-              <ul className="mt-4 space-y-3 text-[18px] lg:text-[24px]">
+              <ul className="mt-6 space-y-4">
                 {companyLinks.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="transition-colors hover:text-[#96e0d9]"
+                      className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]"
                     >
                       {link.label}
                     </Link>
@@ -552,16 +643,17 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+            
             <div>
-              <h3 className="font-[var(--font-syne)] text-[28px] font-bold text-[#96e0d9] lg:text-[36px]">
+              <h3 className="font-[var(--font-syne)] text-[24px] font-bold text-[#96e0d9]">
                 Services
               </h3>
-              <ul className="mt-4 space-y-3 text-[18px] lg:text-[24px]">
+              <ul className="mt-6 space-y-4">
                 {serviceLinks.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="transition-colors hover:text-[#96e0d9]"
+                      className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]"
                     >
                       {link.label}
                     </Link>
@@ -569,92 +661,20 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <div>
-              <h3 className="font-[var(--font-syne)] text-[28px] font-bold text-[#96e0d9] lg:text-[36px]">
-                Contact
-              </h3>
-              <div className="mt-4 space-y-6 text-[18px] lg:text-[24px]">
-                <a
-                  className="group flex items-start gap-4 transition-colors hover:text-[#96e0d9]"
-                  href="https://maps.google.com/?q=123%20Marina%20Boulevard%20Piraeus%20Greece%2018537"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
-                    <MapPin className="h-6 w-6 text-[#33305e]" />
-                  </div>
-                  <span>
-                    123 Marina Boulevard
-                    <br />
-                    Piraeus, Greece 18537
-                  </span>
-                </a>
-                <a
-                  className="group flex items-center gap-4 transition-colors hover:text-[#96e0d9]"
-                  href="tel:+302104567890"
-                >
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
-                    <Phone className="h-6 w-6 text-[#33305e]" />
-                  </div>
-                  <span>+30 210 456 7890</span>
-                </a>
-                <a
-                  className="group flex items-center gap-4 transition-colors hover:text-[#96e0d9]"
-                  href="mailto:info@excursionsgreece.com"
-                >
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
-                    <Mail className="h-6 w-6 text-[#33305e]" />
-                  </div>
-                  <span>info@excursionsgreece.com</span>
-                </a>
-              </div>
-            </div>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/50 pt-6 text-[16px] text-white/80 lg:text-[20px]">
-            <div className="flex items-center gap-4">
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
-              >
-                <Instagram className="h-7 w-7 text-[#33305e]" />
-              </a>
-              <a
-                href="https://www.facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
-              >
-                <Facebook className="h-7 w-7 text-[#33305e]" />
-              </a>
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
-              >
-                <Linkedin className="h-7 w-7 text-[#33305e]" />
-              </a>
-            </div>
+          <div className="mt-20 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row text-sm text-white/60">
             <span>© 2025 Excursions Greece. All rights reserved.</span>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/privacy"
-                className="transition-colors hover:text-white"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="transition-colors hover:text-white"
-              >
-                Terms of Service
-              </Link>
+            
+            <div className="flex gap-4">
+               <a href="#" className="hover:text-white"><Facebook className="h-5 w-5" /></a>
+               <a href="#" className="hover:text-white"><Instagram className="h-5 w-5" /></a>
+               <a href="#" className="hover:text-white"><Linkedin className="h-5 w-5" /></a>
+            </div>
+
+            <div className="flex gap-6">
+              <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white">Terms of Service</Link>
             </div>
           </div>
         </div>

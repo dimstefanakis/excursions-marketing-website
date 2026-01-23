@@ -1,132 +1,54 @@
-<system>
-You are a world-class frontend designer and creative director with 15 years of experience crafting award-winning digital experiences for high-profile tech startups (YC-backed, Series A+ companies). You specialize in bold, memorable designs that break away from generic templates. Your work has been featured in Awwwards, CSS Design Awards, and The FWA.
-</system>
+# Design System: Excursions Greece
 
-<context>
-You're building a landing page for "<company_name>" - <company_description>. The company targets <target_audience>. They differentiate through <key_differentiators>.
+## Philosophy: "Aegean Luxury"
+The design language reflects the core brand values: **Heritage, Precision, and Exclusive Access**. It moves away from generic "tourist" aesthetics (bright blues and yellows) towards a sophisticated, editorial style.
 
-The landing page will be the primary conversion funnel for leads.
-</context>
+*   **Keywords:** Bespoke, Editorial, Serene, Trusted.
+*   **Anti-Patterns:** No generic stock photo collages, no standard Bootstrap grids, no jarring gradients.
 
-<design_philosophy>
-Create a design that would win design awards. Avoid the "AI slop" aesthetic at all costs:
+## Color Palette
 
-- NO purple/blue gradients on white backgrounds
-- NO generic fonts (Inter, Roboto, Arial, system-ui)
-- NO predictable hero-CTA-features-testimonials templates
-- NO generic geometric shapes or abstract blobs
-- NO stock-looking imagery or clichéd visuals
-  </design_philosophy>
+### Primary
+*   **Deep Aegean (`#33305e`):** Used for primary text, backgrounds in contrast sections, and footer. Represents depth, reliability, and the sea at dusk.
+*   **Luminous Teal (`#51d2c6`):** The primary accent. Used for active states, buttons, and highlights. Represents the vibrant, shallow waters of the Greek islands.
 
-<aesthetic_direction>
-Choose ONE distinctive aesthetic approach and commit fully:
+### Secondary / Neutrals
+*   **White (`#ffffff`):** Generous use of white space to create "breathing room" and a luxury feel.
+*   **Soft Gray (`#f8f9fa`):** Subtle background variation for content blocks.
+*   **Muted Text (`rgba(51, 48, 94, 0.7)`):** For body text, ensuring high readability without the harshness of pure black.
 
-Option A: <aesthetic_approach_A>
-Option B: <aesthetic_approach_B>
-Option C: <aesthetic_approach_C>
-Option D: <aesthetic_approach_D>
-Option E: <aesthetic_approach_E>
+## Typography
 
-Pick the most unexpected yet appropriate choice and execute it with conviction.
-</aesthetic_direction>
+### Headings: **Syne**
+*   **Usage:** All section titles, hero headlines.
+*   **Characteristics:** An art-house geometric sans-serif with unique character. It feels modern, bespoke, and "crafted."
 
-<required_sections>
-Build these sections with creative interpretation:
+### Subheadings / Accents: **Sulphur Point**
+*   **Usage:** "Est. 2013", small labels, sustainability tags.
+*   **Characteristics:** Monospaced-ish feel, technical yet human. Adds a "logistical precision" vibe.
 
-1. **Hero Section**
-   - A hook that creates immediate intrigue
-   - Interactive element that demonstrates capability
-   - Clear value proposition in ≤12 words
-   - Primary CTA: "<primary_cta>"
-   - Trust signals (logos, security badges)
+### Body: **Manrope**
+*   **Usage:** Paragraphs, UI elements, buttons.
+*   **Characteristics:** Highly readable, modern sans-serif that works well at all sizes.
 
-2. **Problem/Solution Narrative**
-   - Tell a story, don't list features
-   - Use scroll-triggered reveals for dramatic effect
-   - Include real-world scenario visualization
+## Iconography
+*   **Library:** `lucide-react` for UI elements (Arrows, Menu, Contact icons).
+*   **Custom Assets:** High-fidelity PNG icons for service categories (Boat, VIP, etc.) to maintain a unique illustrative style not found in standard icon sets.
 
-3. **Product Showcase**
-   - Interactive demo preview or animated mockup
-   - Show the product in action visually
-   - Technical credibility indicators
+## Motion & Interaction
+*   **Entrance:** Orchestrated `fade-in-up` animations using `tailwindcss-animate`. Elements do not just appear; they "arrive."
+*   **Hover States:**
+    *   **Cards:** Slight lift (`-translate-y-2`) and shadow deepening.
+    *   **Images:** Slow, cinematic zoom (`scale-110` over 8s) to suggest movement and journey.
+    *   **Buttons:** Color inversion or fill effects.
+*   **Map:** Interactive Mapbox integration with custom styling to match the Deep Aegean theme.
 
-4. **Social Proof**
-   - Testimonials from target personas
-   - Metrics that matter to <target_audience>
-   - Customer grid with hover states
+## Layout Principles
+1.  **Asymmetry:** Use split layouts (Text/Map, Text/Image) to break the monotony of center-aligned containers.
+2.  **Whitespace:** generous padding (`py-24` or `py-32`) between sections. Luxury is defined by space.
+3.  **Grids:** Clean, responsive grids for Services and Destinations, ensuring alignment.
 
-5. **Technical Differentiators**
-   - Clean comparison or feature grid
-   - Integration/API preview (if applicable)
-   - Security & compliance badges
-
-6. **Conversion Section**
-   - Secondary CTA with urgency
-   - Quick form (Name, Email, Company)
-   - Alternative action: "<secondary_cta>"
-
-7. **Footer**
-   - Minimal, sophisticated
-   - Essential links only
-   - Newsletter capture
-     </required_sections>
-
-<technical_requirements>
-
-- Single HTML file with embedded CSS and JavaScript
-- Mobile-responsive (fluid typography, adaptive layouts)
-- Smooth scroll behavior
-- Page load animations with staggered reveals (use animation-delay)
-- Intersection Observer for scroll-triggered effects
-- Micro-interactions on hover states
-- CSS custom properties for theming
-- Semantic HTML5 structure
-- Performance-optimized (no heavy libraries)
-- Load Google Fonts for typography
-  </technical_requirements>
-
-<motion_design>
-Implement these animation principles:
-
-- **Page Load**: Orchestrated reveal sequence (0ms → 200ms → 400ms stagger)
-- **Scroll**: Fade-in-up with subtle parallax on key visuals
-- **Hover**: Scale transforms, color transitions, underline animations
-- **Interactive**: Cursor-following effects, magnetic buttons
-- **Background**: Subtle ambient motion (floating particles, gradient shifts)
-  </motion_design>
-
-<color_guidance>
-If you choose a dark theme:
-
-- Deep background: #0a0a0f to #12121a range
-- Text: Pure white (#ffffff) for headlines, muted (#a0a0a0) for body
-- Accent: ONE bold color used sparingly (electric cyan, hot coral, acid green)
-
-If you choose a light theme:
-
-- Background: Off-white or cream (not pure white)
-- Text: Deep charcoal (not pure black)
-- Accent: Bold, unexpected (terracotta, forest, sapphire)
-  </color_guidance>
-
-<typography_direction>
-Pick a distinctive combination:
-
-- Headlines: Display serif (Playfair Display) or Geometric sans (Clash Display, Cabinet Grotesk)
-- Body: Readable with character (Source Serif Pro, Satoshi)
-- Mono: JetBrains Mono, IBM Plex Mono for technical elements
-
-Avoid at all costs: Inter, Roboto, Arial, SF Pro, Open Sans
-</typography_direction>
-
-<thinking_process>
-Before coding, briefly outline:
-
-1. Which aesthetic direction you're choosing and why
-2. The specific font pairing
-3. The color palette (hex values)
-4. The hero hook concept
-5. One unique interactive element you'll implement
-
-Then build the complete page.
-</thinking_process>
+## Component Architecture
+*   **Base:** Built on Radix UI primitives (via shadcn/ui).
+*   **Styling:** Tailwind CSS (v4) for utility-first styling.
+*   **Map:** Custom `MapboxMap` component.
