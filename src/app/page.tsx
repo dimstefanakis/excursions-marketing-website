@@ -1,30 +1,61 @@
-const imgFinalHeroSlideshow = "http://localhost:3845/assets/d0b0314016527d9d920a19a6c50b13bf9a684da9.png";
-const imgRectangle4150 = "http://localhost:3845/assets/d1229d4af18e371cacf7488298b459052700868e.png";
-const imgExcursionsGreeceLogoWhite1 = "http://localhost:3845/assets/7c65efb2fa1d98090c98468aaa35d387c1861e63.png";
-const imgFrame39847 = "http://localhost:3845/assets/218a41926a12b4903ec6de109c214d107a231f96.png";
-const imgRectangle4136 = "http://localhost:3845/assets/74ce84b3eeb62c2d375a08230e978d92f04befdb.png";
-const imgRectangle4137 = "http://localhost:3845/assets/e4da5798d491dd1fc6107638faa9a0dbaf77ba9c.png";
-const imgRectangle4138 = "http://localhost:3845/assets/9cf1de1c1bd7b100414bea665cb5b3a3d5807b96.png";
-const imgArrowRightSvgrepoCom = "http://localhost:3845/assets/1a63df9b34aae05bd6591fd98be2b587689bb979.svg";
-const imgBoatSvgrepoCom = "http://localhost:3845/assets/bef47c9f59d6c03c7466b40c4b7eedf72e515265.svg";
-const imgBoatSvgrepoCom1 = "http://localhost:3845/assets/42ab8f2e692d6c69fc33a3588c0930057d1db881.svg";
-const imgVip2Fill = "http://localhost:3845/assets/715064fcfefe6ae227d85d190f9991801d8280da.svg";
-const imgVip2Fill1 = "http://localhost:3845/assets/6b8be2998264be91a431a6a79b084cbd79decc50.svg";
-const imgLeafSvgrepoCom = "http://localhost:3845/assets/56d99fb2777d3325cbeb853af7e2202f7f9d96ab.svg";
-const imgMapSvgrepoCom = "http://localhost:3845/assets/256577b598257d2632910a97f970ab1b0e628683.svg";
-const imgLocationPinAlt1SvgrepoCom1 = "http://localhost:3845/assets/e9101c6a4f82bed2ad7b5d86969ee96018c3ee3c.svg";
-const imgBadgeCheckSvgrepoCom = "http://localhost:3845/assets/73623b8d7e6da24d4d253aac9cff6d7018182ea4.svg";
-const imgBoatSvgrepoCom2 = "http://localhost:3845/assets/f205a410959c38b8a512cfe1e45890b14b288386.svg";
-const imgLocation = "http://localhost:3845/assets/4d102177cb1d68a942de3ec06503c3a4c5565234.svg";
-const imgVector6 = "http://localhost:3845/assets/ce1c2b45c00a6997ac729e216f3f9a2dc9d028c8.svg";
-const imgGroup39701 = "http://localhost:3845/assets/5b99e17676700906965a8334501760d546abf84e.svg";
-const imgGroup39706 = "http://localhost:3845/assets/eefdf4fe2b1f14867f502771d6102389f7508451.svg";
-const imgVector7 = "http://localhost:3845/assets/67ec7c54e098a3578bed6641addd917a8f25c03c.svg";
-const imgLinkedinRoundSvgrepoCom = "http://localhost:3845/assets/09e7246a0a92a0c7a8aaf4bc8806a5b648a7ac7f.svg";
-const imgArrowRightSvgrepoCom2 = "http://localhost:3845/assets/8753322e06c57c18df775bb75c8c774a80912851.svg";
-const imgArrowRightSvgrepoCom3 = "http://localhost:3845/assets/b78ff99392c03f16c86cd21b6ca1fd8d20838ec0.svg";
+import Link from "next/link";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
 
-const navItems = ["Home", "Company", "Services", "Destinations", "Contact"];
+import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+
+const imgFinalHeroSlideshow = "/images/figma/hero-slideshow.png";
+const imgRectangle4150 = "/images/figma/greece-map.jpg";
+const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
+const imgFrame39847 = "/images/figma/services-bg.png";
+const imgRectangle4136 = "/images/figma/scenic-bay.png";
+const imgRectangle4137 = "/images/figma/harbor-view.png";
+const imgRectangle4138 = "/images/figma/aerial-coastline.png";
+const imgArrowRightSvgrepoCom =
+  "http://localhost:3845/assets/1a63df9b34aae05bd6591fd98be2b587689bb979.svg";
+const imgBoatSvgrepoCom = "/images/figma/icon-boat.png";
+const imgBoatSvgrepoCom1 =
+  "http://localhost:3845/assets/42ab8f2e692d6c69fc33a3588c0930057d1db881.svg";
+const imgVip2Fill = "/images/figma/icon-cultural-experts.png";
+const imgVip2Fill1 = "/images/figma/icon-vip.png";
+const imgLeafSvgrepoCom = "/images/figma/icon-sustainable.png";
+const imgMapSvgrepoCom = "/images/figma/icon-land-programs.png";
+const imgBoatSvgrepoCom2 =
+  "http://localhost:3845/assets/f205a410959c38b8a512cfe1e45890b14b288386.svg";
+
+const navItems = [
+  { label: "Home", href: "#home" },
+  { label: "Company", href: "#company" },
+  { label: "Services", href: "#services" },
+  { label: "Destinations", href: "#destinations" },
+  { label: "Contact", href: "#contact" },
+];
+
+const navCta = {
+  label: "Get Quote",
+  href: "mailto:info@excursionsgreece.com?subject=Quote%20Request",
+};
+
 const logoRowOne = ["ATLAS", "HAPAG", "SAS", "CRYSTAL", "NOBLE"];
 const logoRowTwo = ["VIRGIN", "VIKING", "WORLD", "EXPLORA", "ATLAS"];
 
@@ -34,15 +65,113 @@ const stats = [
   { value: "15+", label: "Cruise Lines" },
 ];
 
+const companyLinks = [
+  { label: "About Us", href: "#company" },
+  { label: "Our Team", href: "#company" },
+  { label: "Certifications", href: "#company" },
+  { label: "Sustainability", href: "#company" },
+];
+
+const serviceLinks = [
+  { label: "Shore Excursions", href: "#services" },
+  { label: "VIP Services", href: "#services" },
+  { label: "Group Tours", href: "#services" },
+  { label: "Private Transfers", href: "#services" },
+];
+
+const distinctionSlides = [
+  {
+    title: "Nationwide Presence",
+    description:
+      "A network spanning every major port and hidden harbor across the Hellenic coast.",
+  },
+  {
+    title: "Precision & Personalization",
+    description:
+      "Every itinerary meticulously crafted to the exacting standards of luxury travel.",
+  },
+  {
+    title: "Trusted by Industry Leaders",
+    description:
+      "Preferred partner to the world's most respected cruise lines and operators.",
+  },
+  {
+    title: "Experienced Local Teams",
+    description:
+      "Hand-selected professionals with decades of expertise in Greek hospitality.",
+  },
+  {
+    title: "Sustainability Commitment",
+    description:
+      "Travelife-certified operations ensuring responsible and conscious travel.",
+  },
+  {
+    title: "24/7 Operational Support",
+    description:
+      "Dedicated teams available around the clock for flawless coordination.",
+  },
+];
+
+const serviceCardsRowOne = [
+  {
+    titleLines: ["Shore", "Excursions"],
+    icon: imgBoatSvgrepoCom,
+    description:
+      "Immersive shore experiences curated with local experts and tailored guest flows.",
+  },
+  {
+    titleLines: ["VIP &", "Concierge"],
+    icon: imgVip2Fill1,
+    description:
+      "Discreet, white-glove logistics with private guides and priority access.",
+  },
+  {
+    titleLines: ["Port", "Services"],
+    icon: imgBoatSvgrepoCom2,
+    description:
+      "Comprehensive embarkation and disembarkation support across Greek ports.",
+    bullets: ["Meet & Greet", "Luggage Handling", "Port Transfers", "Check-in"],
+  },
+  {
+    titleLines: ["Cultural", "Experts"],
+    icon: imgVip2Fill,
+    description:
+      "Licensed storytellers and archaeologists bringing Greece's heritage to life.",
+  },
+];
+
+const serviceCardsRowTwo = [
+  {
+    titleLines: ["Sustainable", "Tourism"],
+    icon: imgLeafSvgrepoCom,
+    description:
+      "Low-impact itineraries and community partnerships aligned with Travelife.",
+  },
+  {
+    titleLines: ["Land", "Programs"],
+    icon: imgMapSvgrepoCom,
+    description:
+      "Pre- and post-cruise journeys with seamless ground handling nationwide.",
+  },
+  {
+    titleLines: ["Boat & Yacht", "Charters"],
+    icon: imgBoatSvgrepoCom1,
+    description:
+      "Private yachts, tenders, and bespoke maritime experiences with premium crews.",
+  },
+];
+
 const wrap =
-  "mx-auto w-full max-w-[1780px] px-[24px] sm:px-[40px] lg:px-0";
+  "mx-auto w-full max-w-[1780px] px-[24px] sm:px-[40px] lg:px-[40px] min-[1780px]:px-0";
 
 export default function Home() {
   return (
-    <div className="bg-white text-[#33305e]">
-      <section className="relative">
-        <div className={`${wrap} relative min-h-[720px] lg:min-h-[968px]`}>
-          <header className="flex items-start justify-between pt-[3px] lg:absolute lg:left-0 lg:right-0 lg:top-[3px]">
+    <div className="bg-white text-[#33305e] overflow-x-hidden">
+      <section id="home" className="relative">
+        <div
+          className={`${wrap} relative min-h-[720px] lg:min-h-screen min-[1780px]:min-h-[968px]`}
+        >
+          <header className="flex items-start justify-between pt-[3px]">
             <img
               src={imgExcursionsGreeceLogoWhite1}
               alt="Excursions Greece"
@@ -50,54 +179,85 @@ export default function Home() {
             />
             <nav className="hidden items-center gap-[49px] text-[18px] font-medium lg:flex lg:text-[24px] lg:leading-[80px]">
               {navItems.map((item) => (
-                <span
-                  key={item}
-                  className={
-                    item === "Home"
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  aria-current={item.label === "Home" ? "page" : undefined}
+                  className={cn(
+                    "transition-colors hover:text-[#51d2c6]",
+                    item.label === "Home"
                       ? "font-extrabold text-[#51d2c6]"
                       : "text-[#33305e]"
-                  }
+                  )}
                 >
-                  {item}
-                </span>
+                  {item.label}
+                </Link>
               ))}
-              <span className="font-extrabold text-[#33305e]">Get Quote</span>
+              <Button
+                asChild
+                variant="outline"
+                className="h-[44px] rounded-full border-[#33305e]/20 px-5 text-[18px] font-semibold text-[#33305e] transition-colors hover:border-[#51d2c6] hover:text-[#51d2c6]"
+              >
+                <a href={navCta.href}>{navCta.label}</a>
+              </Button>
             </nav>
-            <button className="rounded-full border border-[#33305e]/20 px-4 py-2 text-sm font-semibold text-[#33305e] lg:hidden">
-              Menu
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full border-[#33305e]/20 px-4 py-2 text-sm font-semibold text-[#33305e] lg:hidden"
+                >
+                  Menu
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {navItems.map((item) => (
+                  <DropdownMenuItem key={item.label} asChild>
+                    <Link href={item.href} className="w-full">
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem asChild>
+                  <a href={navCta.href} className="w-full font-semibold">
+                    {navCta.label}
+                  </a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </header>
 
-          <div className="lg:pt-[144px]">
-            <div className="relative lg:grid lg:grid-cols-[880px_879px] lg:gap-[20px] lg:h-[805px]">
-              <div className="relative lg:h-full">
-                <h1 className="text-right font-[var(--font-syne)] text-[32px] font-bold leading-[42px] lg:text-[40px] lg:leading-[46px]">
+          <div>
+            <div className="relative lg:grid lg:grid-cols-2 lg:gap-6 lg:h-[calc(100vh-220px)] min-[1780px]:grid-cols-[880px_879px] min-[1780px]:gap-[20px] min-[1780px]:h-[805px]">
+              <div className="relative flex flex-col lg:h-full">
+                <h1 className="text-right font-[var(--font-syne)] text-[32px] font-bold leading-[42px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700 lg:text-[40px] lg:leading-[46px]">
                   Luxury Shore
                   <br />
                   Experiences
                 </h1>
                 <div className="mt-[28px] flex items-start justify-between gap-6 text-[20px] leading-[28px] sm:text-[24px] lg:text-[32px] lg:leading-[normal]">
-                  <p className="max-w-[520px]">
+                  <p className="max-w-[520px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:delay-100 motion-safe:duration-700">
                     Curated by Greece&apos;s
                     <br />
                     Most Trusted &amp; Leading DMC
                   </p>
-                  <p className="text-right font-[var(--font-sulphur)] text-[20px] leading-[24px] lg:text-[24px] lg:leading-[111px]">
+                  <p className="text-right font-[var(--font-sulphur)] text-[20px] leading-[24px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:delay-200 motion-safe:duration-700 lg:text-[24px] lg:leading-[111px]">
                     since 2013
                   </p>
                 </div>
-                <div className="mt-[22px] overflow-hidden bg-[#96e0d9] lg:absolute lg:bottom-0 lg:left-0 lg:mt-0">
+                <div className="mt-[22px] overflow-hidden bg-[#96e0d9] lg:mt-auto">
                   <img
                     src={imgRectangle4150}
                     alt="Greece routes map"
-                    className="h-[320px] w-full object-cover sm:h-[420px] lg:h-[575px]"
+                    className="h-[320px] w-full object-cover sm:h-[420px] lg:h-[clamp(320px,45vh,575px)] min-[1780px]:h-[575px]"
                   />
-                  <button className="absolute bottom-[22px] left-[22px] flex h-[56px] items-center gap-4 bg-white px-6 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] lg:text-[24px]">
+                  <button className="group absolute bottom-[22px] left-[22px] flex h-[56px] items-center gap-4 bg-white px-6 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]">
                     Explore Routes
                     <img
                       src={imgArrowRightSvgrepoCom}
                       alt="Arrow"
-                      className="h-[48px] w-[44px]"
+                      className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
                     />
                   </button>
                 </div>
@@ -107,18 +267,22 @@ export default function Home() {
                 <img
                   src={imgFinalHeroSlideshow}
                   alt="Aegean waters"
-                  className="absolute inset-0 h-full w-full object-cover opacity-70"
+                  className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-[4000ms] hover:scale-105"
                 />
-                <button className="absolute bottom-[22px] left-[22px] flex items-center gap-4 bg-white px-6 py-3 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] lg:text-[24px]">
-                  Contact Us
-                  <img
-                    src={imgArrowRightSvgrepoCom}
-                    alt="Arrow"
-                    className="h-[48px] w-[44px]"
-                  />
-                </button>
+                <Button
+                  asChild
+                  className="group absolute bottom-[22px] left-[22px] h-[56px] gap-4 rounded-none bg-white px-6 py-3 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]"
+                >
+                  <Link href="#contact">
+                    Contact Us
+                    <img
+                      src={imgArrowRightSvgrepoCom}
+                      alt="Arrow"
+                      className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </Link>
+                </Button>
               </div>
-
             </div>
           </div>
         </div>
@@ -152,8 +316,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${wrap} py-14`}>
-        <h2 className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] sm:text-[32px] lg:text-[40px] lg:leading-[46px]">
+      <section id="company" className={`${wrap} py-14`}>
+        <h2 className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700 sm:text-[32px] lg:text-[40px] lg:leading-[46px]">
           Chosen by the World’s
           <br />
           Finest Voyages
@@ -161,20 +325,20 @@ export default function Home() {
         <div className="mt-6 border-t border-[#33305e]/30">
           <div className="grid grid-cols-2 text-center text-[20px] font-light leading-[50px] text-[#33305e] sm:grid-cols-3 lg:grid-cols-5 lg:text-[40px] lg:leading-[80px]">
             {logoRowOne.map((logo) => (
-              <div key={logo}>{logo}</div>
+              <div key={logo}>
+                <span className="inline-flex w-full items-center justify-center px-4 py-1 transition-colors duration-300 hover:bg-[#51d2c6] hover:text-white">
+                  {logo}
+                </span>
+              </div>
             ))}
           </div>
           <div className="border-t border-[#33305e]/30" />
           <div className="grid grid-cols-2 text-center text-[20px] font-light leading-[50px] text-[#33305e] sm:grid-cols-3 lg:grid-cols-5 lg:text-[40px] lg:leading-[80px]">
             {logoRowTwo.map((logo) => (
               <div key={logo}>
-                {logo === "EXPLORA" ? (
-                  <span className="inline-flex w-full items-center justify-center bg-[#51d2c6] px-4 py-1 font-extrabold text-white">
-                    {logo}
-                  </span>
-                ) : (
-                  logo
-                )}
+                <span className="inline-flex w-full items-center justify-center px-4 py-1 transition-colors duration-300 hover:bg-[#51d2c6] hover:text-white">
+                  {logo}
+                </span>
               </div>
             ))}
           </div>
@@ -182,7 +346,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${wrap} pb-8`}>
+      <section id="services" className={`${wrap} pb-8`}>
         <h2 className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] sm:text-[32px] lg:text-[40px] lg:leading-[46px]">
           Bespoke Experiences
           <br />
@@ -198,116 +362,84 @@ export default function Home() {
             className="absolute inset-0 h-full w-full object-cover opacity-70"
           />
           <div className="relative mx-auto grid gap-6 lg:max-w-[1620px] lg:grid-cols-4 lg:gap-[36px]">
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                Shore
-                <br />
-                Excursions
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgBoatSvgrepoCom}
-                  alt="Boat icon"
-                  className="h-full w-full object-contain"
-                />
+            {serviceCardsRowOne.map((card) => (
+              <div
+                key={card.titleLines.join(" ")}
+                tabIndex={0}
+                className="group relative cursor-pointer overflow-hidden bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-[#33305e] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#51d2c6] lg:h-[397px]"
+              >
+                <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
+                  {card.titleLines.map((line, index) => (
+                    <span key={line}>
+                      {line}
+                      {index < card.titleLines.length - 1 ? <br /> : null}
+                    </span>
+                  ))}
+                </h3>
+                <div className="mt-4 space-y-3 text-[16px] leading-[22px] text-[#33305e]/80 opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white/80 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:text-white/80">
+                  <p>{card.description}</p>
+                  {card.bullets ? (
+                    <ul className="space-y-1 text-[15px] leading-[20px]">
+                      {card.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+                <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
+                  <img
+                    src={card.icon}
+                    alt={`${card.titleLines.join(" ")} icon`}
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                VIP &amp;
-                <br />
-                Concierge
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgVip2Fill1}
-                  alt="VIP icon"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            </div>
-            <div className="relative bg-[#33305e] p-6 text-white lg:h-[397px]">
-              <p className="text-[18px] leading-[24px] lg:text-[20px] lg:leading-[26px]">
-                Comprehensive embarkation and disembarkation support in all Greek
-                cruise ports.
-              </p>
-              <div className="mt-6 border-t border-white/30 pt-4 text-[20px] leading-[29px]">
-                <p>Meet &amp; Greet</p>
-                <p>Luggage Handling</p>
-                <p>Port Transfers</p>
-                <p>Check-in Services</p>
-              </div>
-            </div>
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                Cultural
-                <br />
-                Experts
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgVip2Fill}
-                  alt="Cultural experts icon"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="relative mx-auto mt-6 grid gap-6 lg:max-w-[1206px] lg:grid-cols-3 lg:gap-[36px]">
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                Sustainable
-                <br />
-                Tourism
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgLeafSvgrepoCom}
-                  alt="Leaf icon"
-                  className="h-full w-full object-contain"
-                />
+            {serviceCardsRowTwo.map((card) => (
+              <div
+                key={card.titleLines.join(" ")}
+                tabIndex={0}
+                className="group relative cursor-pointer overflow-hidden bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-[#33305e] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#51d2c6] lg:h-[397px]"
+              >
+                <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
+                  {card.titleLines.map((line, index) => (
+                    <span key={line}>
+                      {line}
+                      {index < card.titleLines.length - 1 ? <br /> : null}
+                    </span>
+                  ))}
+                </h3>
+                <div className="mt-4 space-y-3 text-[16px] leading-[22px] text-[#33305e]/80 opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white/80 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:text-white/80">
+                  <p>{card.description}</p>
+                </div>
+                <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
+                  <img
+                    src={card.icon}
+                    alt={`${card.titleLines.join(" ")} icon`}
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                Land
-                <br />
-                Programs
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgMapSvgrepoCom}
-                  alt="Map icon"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            </div>
-            <div className="relative bg-white p-6 lg:h-[397px]">
-              <h3 className="font-[var(--font-syne)] text-[24px] font-bold leading-[34px] lg:text-[48px] lg:leading-[49px]">
-                Boat &amp; Yacht
-                <br />
-                Charters
-              </h3>
-              <div className="absolute bottom-[24px] right-[24px] flex h-[60px] w-[60px] items-center justify-center lg:h-[90px] lg:w-[90px]">
-                <img
-                  src={imgBoatSvgrepoCom1}
-                  alt="Yacht icon"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="relative mt-8 flex items-center justify-center border-y border-white/50 py-2">
-            <button className="flex h-[56px] items-center gap-4 bg-white px-6 text-[20px] font-semibold text-[#33305e] lg:text-[24px]">
-              View All Services
-              <img
-                src={imgArrowRightSvgrepoCom}
-                alt="Arrow"
-                className="h-[48px] w-[44px]"
-              />
-            </button>
+            <Button
+              asChild
+              className="group h-[56px] gap-4 rounded-none bg-white px-6 text-[20px] font-semibold text-[#33305e] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]"
+            >
+              <Link href="#services">
+                View All Services
+                <img
+                  src={imgArrowRightSvgrepoCom}
+                  alt="Arrow"
+                  className="h-[48px] w-[44px] transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -328,60 +460,43 @@ export default function Home() {
         <h2 className="font-[var(--font-syne)] text-[28px] font-bold lg:text-[40px]">
           Our Distinction
         </h2>
-        <div className="relative mt-10 flex items-center justify-center">
-          <button className="absolute left-[-8px] hidden h-[60px] w-[55px] items-center justify-center lg:flex">
-            <img
-              src={imgArrowRightSvgrepoCom3}
-              alt="Previous"
-              className="h-[60px] w-[55px] rotate-180"
-            />
-          </button>
-          <div className="flex items-start">
-            <div className="relative mt-[38px] flex h-[320px] w-[304px] flex-col items-center justify-center gap-6 border border-white bg-[#d5f3f0] text-center text-white">
-              <p className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] lg:text-[36px] lg:leading-[49px]">
-                Nationwide Presence
-              </p>
-              <img
-                src={imgLocationPinAlt1SvgrepoCom1}
-                alt="Location pin"
-                className="h-[87px] w-[87px] lg:h-[113px] lg:w-[113px]"
-              />
-            </div>
-            <div className="relative z-10 -ml-[132px] -mr-[132px] flex h-[397px] w-[378px] flex-col items-center justify-center gap-6 bg-[#96e0d9] px-6 text-center text-white">
-              <div className="w-full border-y border-white/60 py-4">
-                <p className="font-[var(--font-syne)] text-[32px] font-bold leading-[42px] lg:text-[40px] lg:leading-[49px]">
-                  Client
-                  <br />
-                  Support
-                </p>
-              </div>
-              <p className="text-[18px] leading-[26px] lg:text-[20px]">
-                Dedicated operations teams available around the clock, ensuring
-                flawless coordination before, during, and after every call.
-              </p>
-            </div>
-            <div className="relative mt-[38px] flex h-[320px] w-[304px] flex-col items-center justify-center gap-6 border border-white bg-[#d5f3f0] text-center text-white">
-              <p className="font-[var(--font-syne)] text-[28px] font-bold leading-[38px] lg:text-[36px] lg:leading-[49px]">
-                Trusted by Industry Leaders
-              </p>
-              <img
-                src={imgBadgeCheckSvgrepoCom}
-                alt="Badge check"
-                className="h-[87px] w-[87px] lg:h-[113px] lg:w-[113px]"
-              />
-            </div>
-          </div>
-          <button className="absolute right-[-8px] hidden h-[60px] w-[55px] items-center justify-center lg:flex">
-            <img
-              src={imgArrowRightSvgrepoCom2}
-              alt="Next"
-              className="h-[60px] w-[55px]"
-            />
-          </button>
-        </div>
+        <Carousel
+          className="relative mt-10"
+          opts={{ align: "center", loop: true }}
+        >
+          <CarouselContent className="items-stretch">
+            {distinctionSlides.map((slide) => (
+              <CarouselItem
+                key={slide.title}
+                className="basis-full sm:basis-1/2 lg:basis-1/3"
+              >
+                <div className="flex h-full items-center justify-center">
+                  <div className="relative flex h-[397px] w-full max-w-[378px] flex-col items-center justify-center gap-6 bg-[#96e0d9] px-6 text-center text-white transition-transform duration-300 hover:-translate-y-1">
+                    <div className="w-full border-y border-white/60 py-4">
+                      <p className="font-[var(--font-syne)] text-[28px] font-bold leading-[36px] lg:text-[32px] lg:leading-[42px]">
+                        {slide.title}
+                      </p>
+                    </div>
+                    <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[26px]">
+                      {slide.description}
+                    </p>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious
+            variant="ghost"
+            className="hidden lg:flex !left-[-8px] !h-[60px] !w-[55px] !rounded-none text-[#33305e] hover:bg-[#33305e]/10 [&>svg]:size-7"
+          />
+          <CarouselNext
+            variant="ghost"
+            className="hidden lg:flex !right-[-8px] !h-[60px] !w-[55px] !rounded-none text-[#33305e] hover:bg-[#33305e]/10 [&>svg]:size-7"
+          />
+        </Carousel>
       </section>
 
-      <section className={`${wrap} pb-16`}>
+      <section id="destinations" className={`${wrap} pb-16`}>
         <div className="grid items-center gap-10 lg:grid-cols-[665px_1fr] lg:gap-[36px]">
           <div>
             <img
@@ -399,23 +514,23 @@ export default function Home() {
             <img
               src={imgRectangle4136}
               alt="Scenic bay"
-              className="h-[220px] w-full object-cover lg:h-[397px]"
+              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
             />
             <img
               src={imgRectangle4138}
               alt="Aerial coastline"
-              className="h-[220px] w-full object-cover lg:h-[397px]"
+              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
             />
             <img
               src={imgRectangle4137}
               alt="Harbor view"
-              className="h-[220px] w-full object-cover lg:h-[397px]"
+              className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.02] lg:h-[397px]"
             />
           </div>
         </div>
       </section>
 
-      <section className="bg-[#33305e] text-white">
+      <section id="contact" className="bg-[#33305e] text-white">
         <div className={`${wrap} py-12`}>
           <div className="border-y border-white/50 py-6 text-center">
             <h2 className="font-[var(--font-syne)] text-[28px] font-bold sm:text-[32px] lg:text-[40px]">
@@ -429,10 +544,16 @@ export default function Home() {
                 Company
               </h3>
               <ul className="mt-4 space-y-3 text-[18px] lg:text-[24px]">
-                <li>About Us</li>
-                <li>Our Team</li>
-                <li>Certifications</li>
-                <li>Sustainability</li>
+                {companyLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="transition-colors hover:text-[#96e0d9]"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
@@ -440,10 +561,16 @@ export default function Home() {
                 Services
               </h3>
               <ul className="mt-4 space-y-3 text-[18px] lg:text-[24px]">
-                <li>Shore Excursions</li>
-                <li>VIP Services</li>
-                <li>Group Tours</li>
-                <li>Private Transfers</li>
+                {serviceLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="transition-colors hover:text-[#96e0d9]"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
@@ -451,52 +578,87 @@ export default function Home() {
                 Contact
               </h3>
               <div className="mt-4 space-y-6 text-[18px] lg:text-[24px]">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <img src={imgLocation} alt="Location" className="h-6 w-6" />
+                <a
+                  className="group flex items-start gap-4 transition-colors hover:text-[#96e0d9]"
+                  href="https://maps.google.com/?q=123%20Marina%20Boulevard%20Piraeus%20Greece%2018537"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
+                    <MapPin className="h-6 w-6 text-[#33305e]" />
                   </div>
                   <span>
                     123 Marina Boulevard
                     <br />
                     Piraeus, Greece 18537
                   </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <img src={imgVector6} alt="Phone" className="h-6 w-6" />
+                </a>
+                <a
+                  className="group flex items-center gap-4 transition-colors hover:text-[#96e0d9]"
+                  href="tel:+302104567890"
+                >
+                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
+                    <Phone className="h-6 w-6 text-[#33305e]" />
                   </div>
                   <span>+30 210 456 7890</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <img src={imgGroup39701} alt="Email" className="h-6 w-6" />
+                </a>
+                <a
+                  className="group flex items-center gap-4 transition-colors hover:text-[#96e0d9]"
+                  href="mailto:info@excursionsgreece.com"
+                >
+                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-shadow group-hover:shadow-[0_6px_18px_rgba(150,224,217,0.45)]">
+                    <Mail className="h-6 w-6 text-[#33305e]" />
                   </div>
                   <span>info@excursionsgreece.com</span>
-                </div>
+                </a>
               </div>
             </div>
           </div>
 
           <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/50 pt-6 text-[16px] text-white/80 lg:text-[20px]">
             <div className="flex items-center gap-4">
-              <img
-                src={imgGroup39706}
-                alt="Social icon"
-                className="h-[60px] w-[60px]"
-              />
-              <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                <img src={imgVector7} alt="Social icon" className="h-6 w-6" />
-              </div>
-              <img
-                src={imgLinkedinRoundSvgrepoCom}
-                alt="LinkedIn"
-                className="h-[60px] w-[60px]"
-              />
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
+              >
+                <Instagram className="h-7 w-7 text-[#33305e]" />
+              </a>
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
+              >
+                <Facebook className="h-7 w-7 text-[#33305e]" />
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-[60px] w-[60px] items-center justify-center bg-white transition-transform hover:-translate-y-0.5"
+              >
+                <Linkedin className="h-7 w-7 text-[#33305e]" />
+              </a>
             </div>
             <span>© 2025 Excursions Greece. All rights reserved.</span>
             <div className="flex items-center gap-6">
-              <span>Privacy Policy</span>
-              <span>Terms of Service</span>
+              <Link
+                href="/privacy"
+                className="transition-colors hover:text-white"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="transition-colors hover:text-white"
+              >
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>
