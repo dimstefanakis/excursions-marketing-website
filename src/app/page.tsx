@@ -22,10 +22,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MapboxMap } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
 
 const imgFinalHeroSlideshow = "/images/figma/hero-slideshow.png";
-const imgRectangle4150 = "/images/figma/greece-map.jpg";
 const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
 const imgFrame39847 = "/images/figma/services-bg.png";
 const imgRectangle4136 = "/images/figma/scenic-bay.png";
@@ -247,11 +247,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="mt-[22px] overflow-hidden bg-[#96e0d9] lg:mt-auto">
-                  <img
-                    src={imgRectangle4150}
-                    alt="Greece routes map"
-                    className="h-[320px] w-full object-cover sm:h-[420px] lg:h-[clamp(320px,45vh,575px)] min-[1780px]:h-[575px]"
-                  />
+                  <MapboxMap className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,45vh,575px)] min-[1780px]:h-[575px]" />
                   <button className="group absolute bottom-[22px] left-[22px] flex h-[56px] items-center gap-4 bg-white px-6 text-[20px] font-semibold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white/90 lg:text-[24px]">
                     Explore Routes
                     <img
