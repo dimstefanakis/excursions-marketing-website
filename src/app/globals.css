@@ -123,6 +123,11 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  /* Hide Mapbox Logo & Attribution */
+  .mapboxgl-ctrl-logo,
+  .mapboxgl-ctrl-attrib {
+    display: none !important;
+  }
 }
 
 .map-popup.mapboxgl-popup {
