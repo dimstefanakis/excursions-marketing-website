@@ -207,7 +207,7 @@ export default function Home() {
               <Button
                 asChild
                 variant="outline"
-                className="h-[48px] rounded-full border-[#33305e]/20 px-8 text-[16px] font-semibold text-[#33305e] transition-all hover:border-[#51d2c6] hover:bg-[#51d2c6] hover:text-white"
+                className="h-[48px] border-[#33305e]/20 px-8 text-[16px] font-semibold text-[#33305e] transition-all hover:border-[#51d2c6] hover:bg-[#51d2c6] hover:text-white"
               >
                 <a href={navCta.href}>{navCta.label}</a>
               </Button>
@@ -219,7 +219,7 @@ export default function Home() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-full border-[#33305e]/20 lg:hidden"
+                  className="border-[#33305e]/20 lg:hidden"
                 >
                   <span className="sr-only">Menu</span>
                   <div className="flex flex-col gap-1.5">
@@ -277,16 +277,16 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="mt-[40px] relative overflow-hidden rounded-2xl bg-[#96e0d9]/10 lg:mt-auto shadow-2xl shadow-[#33305e]/5">
+                <div className="mt-[40px] relative overflow-hidden bg-[#96e0d9]/10 lg:mt-auto shadow-2xl shadow-[#33305e]/5">
                   <MapboxMap className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,40vh,500px)] min-[1780px]:h-[500px]" />
 
                   <Link
                     href="#services"
                     className="group absolute bottom-[24px] left-[24px] z-10"
                   >
-                    <button className="flex h-[56px] items-center gap-4 rounded-full bg-white pl-6 pr-4 text-[18px] font-bold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.15)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                    <button className="flex h-[56px] items-center gap-4 bg-white pl-6 pr-4 text-[18px] font-bold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.15)] transition-all hover:-translate-y-1 hover:shadow-xl">
                       Explore Routes
-                      <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#51d2c6] text-white transition-transform duration-300 group-hover:rotate-[-45deg]">
+                      <span className="flex h-[40px] w-[40px] items-center justify-center bg-[#51d2c6] text-white transition-transform duration-300 group-hover:rotate-[-45deg]">
                         <ArrowRight className="h-5 w-5" />
                       </span>
                     </button>
@@ -295,7 +295,7 @@ export default function Home() {
               </div>
 
               {/* Right Column: Hero Image */}
-              <div className="relative mt-8 overflow-hidden rounded-2xl bg-[#96e0d9] lg:mt-0 lg:h-full shadow-2xl shadow-[#33305e]/10 group">
+              <div className="relative mt-8 overflow-hidden bg-[#96e0d9] lg:mt-0 lg:h-full shadow-2xl shadow-[#33305e]/10 group">
                 <img
                   src={imgHeroScenic}
                   alt="Aegean waters"
@@ -307,7 +307,7 @@ export default function Home() {
                   href="#contact"
                   className="absolute bottom-[24px] left-[24px] z-10"
                 >
-                  <Button className="h-[64px] gap-6 rounded-none bg-white px-8 text-[20px] font-bold text-[#33305e] shadow-lg transition-all hover:-translate-y-1 hover:bg-white hover:text-[#51d2c6]">
+                  <Button className="h-[64px] gap-6 bg-white px-8 text-[20px] font-bold text-[#33305e] shadow-lg transition-all hover:-translate-y-1 hover:bg-white hover:text-[#51d2c6]">
                     Contact Us
                     <ArrowRight className="h-6 w-6" />
                   </Button>
@@ -353,7 +353,7 @@ export default function Home() {
       {/* Partners Section */}
       <section id="company" className={`${wrap} py-20 lg:py-28`}>
         <div className="mb-12 flex flex-col items-center text-center">
-          <span className="mb-4 inline-block rounded-full bg-[#51d2c6]/10 px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-[#51d2c6]">
+          <span className="mb-4 inline-block bg-[#51d2c6]/10 px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-[#51d2c6]">
             Trusted Partners
           </span>
           <h2 className="font-[var(--font-syne)] text-[32px] font-bold leading-[1.2] sm:text-[40px] lg:text-[56px]">
@@ -433,7 +433,7 @@ export default function Home() {
           <div className="mt-16 flex justify-center">
             <Button
               asChild
-              className="h-[64px] rounded-full bg-[#33305e] px-10 text-[18px] font-bold text-white shadow-xl transition-all hover:bg-[#33305e]/90 hover:scale-105"
+              className="h-[64px] bg-[#33305e] px-10 text-[18px] font-bold text-white shadow-xl transition-all hover:bg-[#33305e]/90 hover:scale-105"
             >
               <Link href="#contact">
                 Plan Your Experience
@@ -472,13 +472,13 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="flex items-center gap-2 rounded-full bg-[#f8f9fa] p-1.5 border border-[#33305e]/10">
+          <div className="flex items-center gap-2 bg-[#f8f9fa] p-1.5 border border-[#33305e]/10">
             {(["All", "Major", "Hidden Gem"] as const).map((filter) => (
               <button
                 key={filter}
                 onClick={() => setActivePortFilter(filter)}
                 className={cn(
-                  "rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300",
+                  "px-6 py-2.5 text-sm font-semibold transition-all duration-300",
                   activePortFilter === filter
                     ? "bg-[#33305e] text-white shadow-md"
                     : "text-[#33305e]/70 hover:text-[#33305e] hover:bg-white"
@@ -490,7 +490,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative h-[600px] w-full overflow-hidden rounded-[32px] border border-[#33305e]/10 shadow-2xl">
+        <div className="relative h-[600px] w-full overflow-hidden border border-[#33305e]/10 shadow-2xl">
           <MapboxMap ports={filteredPorts} className="h-full w-full" />
         </div>
       </section>
@@ -511,7 +511,7 @@ export default function Home() {
                   key={slide.title}
                   className="pl-4 md:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="group h-full rounded-2xl bg-white p-8 shadow-sm transition-all hover:shadow-xl border border-transparent hover:border-[#51d2c6]/20">
+                  <div className="group h-full bg-white p-8 shadow-sm transition-all hover:shadow-xl border border-transparent hover:border-[#51d2c6]/20">
                     <div className="mb-6 h-1 w-12 bg-[#51d2c6]" />
                     <h3 className="mb-4 font-[var(--font-syne)] text-[24px] font-bold leading-tight">
                       {slide.title}
@@ -535,7 +535,7 @@ export default function Home() {
       <section id="destinations" className={`${wrap} py-24`}>
         <div className="grid gap-12 lg:grid-cols-[400px_1fr] lg:gap-20">
           <div className="flex flex-col justify-center">
-            <div className="mb-8 flex h-[80px] w-[80px] items-center justify-center rounded-2xl bg-[#f0fdfc]">
+            <div className="mb-8 flex h-[80px] w-[80px] items-center justify-center bg-[#f0fdfc]">
               <MapPin className="h-10 w-10 text-[#51d2c6]" />
             </div>
             <h2 className="mb-6 font-[var(--font-syne)] text-[40px] font-bold leading-[1.1]">
@@ -555,21 +555,21 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="group relative overflow-hidden rounded-2xl h-[300px] lg:h-[450px]">
+            <div className="group relative overflow-hidden h-[300px] lg:h-[450px]">
               <img
                 src={imgRectangle4136}
                 alt="Scenic bay"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="group relative overflow-hidden rounded-2xl h-[300px] lg:h-[450px] mt-8 sm:mt-12">
+            <div className="group relative overflow-hidden h-[300px] lg:h-[450px] mt-8 sm:mt-12">
               <img
                 src={imgRectangle4138}
                 alt="Aerial coastline"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="group relative overflow-hidden rounded-2xl h-[300px] lg:h-[450px]">
+            <div className="group relative overflow-hidden h-[300px] lg:h-[450px]">
               <img
                 src={imgRectangle4137}
                 alt="Harbor view"
@@ -583,7 +583,7 @@ export default function Home() {
       {/* Footer / Contact */}
       <section
         id="contact"
-        className="bg-[#33305e] text-white rounded-t-[40px] overflow-hidden"
+        className="bg-[#33305e] text-white overflow-hidden"
       >
         <div className={`${wrap} py-20`}>
           <div className="mb-16 border-b border-white/10 pb-12 text-center">
@@ -613,7 +613,7 @@ export default function Home() {
                   href="mailto:info@excursionsgreece.com"
                   className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5">
+                  <div className="flex h-12 w-12 items-center justify-center bg-white/5">
                     <Mail className="h-5 w-5" />
                   </div>
                   info@excursionsgreece.com
@@ -622,13 +622,13 @@ export default function Home() {
                   href="tel:+302104567890"
                   className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5">
+                  <div className="flex h-12 w-12 items-center justify-center bg-white/5">
                     <Phone className="h-5 w-5" />
                   </div>
                   +30 210 456 7890
                 </a>
                 <div className="flex items-start gap-4 text-[18px] font-medium">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 shrink-0">
+                  <div className="flex h-12 w-12 items-center justify-center bg-white/5 shrink-0">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span>
