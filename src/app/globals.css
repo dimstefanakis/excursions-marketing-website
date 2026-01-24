@@ -150,7 +150,6 @@
   position: relative;
   width: 240px;
   padding: 14px 16px 16px;
-  border-radius: 16px;
   background: #ffffff;
   color: #33305e;
   box-shadow: 0 18px 40px rgba(51, 48, 94, 0.22);
@@ -196,7 +195,6 @@
   color: #33305e;
   background: #96e0d9;
   padding: 6px 12px;
-  border-radius: 9999px;
   text-decoration: none;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
