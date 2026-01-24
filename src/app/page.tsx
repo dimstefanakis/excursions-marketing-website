@@ -31,7 +31,8 @@ import { MapboxMap, PORTS, type Port } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
 
 // Local Assets
-const imgHeroScenic = "/images/hero-greece-DgBbO2gW.jpg";
+const imgHeroScenic =
+  "/images/ew0KICAgICAgICAgICJidWNrZXQiOiAiaHR0cHM6Ly9hZW0tcHJvZC1wdWJsaXNoLnZpa2luZy5jb20iLA0KICAgICAgICAgICJrZXkiOiAiY29udGVudC9kYW0vdmlraW5nY3J1aXNlcy9lbi9tYWdub2xpYS1pbWFnZXMvbWFyX2NvbnRlbnQvc3RhdGljLWltYWdlcy9DQ19TVEFSX.webp";
 const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
 const imgRectangle4136 = "/images/figma/scenic-bay.png";
 const imgRectangle4137 = "/images/figma/harbor-view.png";
@@ -159,7 +160,7 @@ const serviceCards = [
 ];
 
 const wrap =
-  "mx-auto w-full max-w-[1780px] px-[24px] sm:px-[40px] lg:px-[60px] min-[1780px]:px-0";
+  "w-full px-[24px] sm:px-[40px] lg:px-[60px] 2xl:px-[80px]";
 
 export default function Home() {
   const [activePortFilter, setActivePortFilter] = useState<

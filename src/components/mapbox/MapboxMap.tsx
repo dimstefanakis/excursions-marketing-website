@@ -18,6 +18,33 @@ export type Port = {
   category: "Major" | "Hidden Gem";
 };
 
+type PortGeoProperties = {
+  name: string;
+  fact: string;
+  link: string;
+  category: Port["category"];
+};
+
+const buildPortsGeojson = (
+  ports: Port[]
+): GeoJSON.FeatureCollection<GeoJSON.Point, PortGeoProperties> => ({
+  type: "FeatureCollection",
+  features: ports.map((port) => ({
+    type: "Feature",
+    id: port.name,
+    properties: {
+      name: port.name,
+      fact: port.fact,
+      link: port.link,
+      category: port.category,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: port.coordinates,
+    },
+  })),
+});
+
 export const PORTS: Port[] = [
   {
     name: "Piraeus",
@@ -142,25 +169,8 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
     const map = mapRef.current;
     if (!map.getSource("ports")) return;
 
-    const portsGeojson = {
-      type: "FeatureCollection",
-      features: ports.map((port) => ({
-        type: "Feature",
-        id: port.name,
-        properties: {
-          name: port.name,
-          fact: port.fact,
-          link: port.link,
-          category: port.category,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: port.coordinates,
-        },
-      })),
-    } as const;
-
-    (map.getSource("ports") as mapboxgl.GeoJSONSource).setData(portsGeojson as any);
+    const portsGeojson = buildPortsGeojson(ports);
+    (map.getSource("ports") as mapboxgl.GeoJSONSource).setData(portsGeojson);
   }, [ports]);
 
   useEffect(() => {
@@ -182,23 +192,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
     map.once("load", () => {
       map.setProjection("mercator");
 
-      const portsGeojson = {
-        type: "FeatureCollection",
-        features: ports.map((port) => ({
-          type: "Feature",
-          id: port.name,
-          properties: {
-            name: port.name,
-            fact: port.fact,
-            link: port.link,
-            category: port.category,
-          },
-          geometry: {
-            type: "Point",
-            coordinates: port.coordinates,
-          },
-        })),
-      } as const;
+      const portsGeojson = buildPortsGeojson(ports);
 
       map.addSource("ports", {
         type: "geojson",
@@ -296,6 +290,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
 
       const attachPopupHandlers = () => {
         const popupEl = popup.getElement();
+        if (!popupEl) return;
         popupEl.addEventListener("mouseenter", () => {
           popupHover = true;
           if (hideTimeout) {
@@ -318,9 +313,11 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
         };
 
         const color = category === "Major" ? "#51d2c6" : "#ffb74d";
+        const geometry = feature.geometry;
+        if (!geometry || geometry.type !== "Point") return;
 
         popup
-          .setLngLat(feature.geometry.coordinates as [number, number])
+          .setLngLat(geometry.coordinates as [number, number])
           .setHTML(
             `<div class="map-popup-content">
               <div style="margin-bottom: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: ${color};">${category}</div>
