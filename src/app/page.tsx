@@ -51,8 +51,23 @@ const navCta = {
   href: "mailto:info@excursionsgreece.com?subject=Quote%20Request",
 };
 
-const logoRowOne = ["ATLAS", "HAPAG", "SAS", "CRYSTAL", "NOBLE"];
-const logoRowTwo = ["VIRGIN", "VIKING", "WORLD", "EXPLORA", "ATLAS"];
+const logoRowOne = [
+  "Phoenix Reisen",
+  "The World",
+  "Noble Caledonia",
+  "Saga Cruises",
+  "Olivia",
+  "Virgin Voyages",
+  "Semester at Sea",
+];
+const logoRowTwo = [
+  "Mystic Cruises",
+  "Crystal Cruises",
+  "Hapag-Lloyd Cruises",
+  "APT Luxury Travel",
+  "Explora Journeys",
+  "Vidanta World",
+];
 
 const stats = [
   { value: "50+", label: "Greek Ports" },
@@ -325,7 +340,7 @@ export default function Home() {
           <p className="max-w-[1400px] font-[var(--font-syne)] text-[28px] font-medium leading-[1.4] sm:text-[36px] lg:text-[42px] lg:leading-[1.3] text-[#33305e]">
             Where every journey unfolds as a story of elegance and discovery.
             Our bespoke programs serve the world&apos;s most distinguished
-            cruise lines across Greece&apos;s storied ports.
+            cruise lines across Greece&apos;s storied destinations.
           </p>
         </div>
       </section>
@@ -360,7 +375,7 @@ export default function Home() {
           <h2 className="font-[var(--font-syne)] text-[32px] font-bold leading-[1.2] sm:text-[40px] lg:text-[56px]">
             Chosen by the World’s
             <br />
-            Finest Voyages
+            Finest Cruise Lines
           </h2>
         </div>
 
