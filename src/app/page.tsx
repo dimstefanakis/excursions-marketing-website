@@ -27,7 +27,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MapboxMap, PORTS, type Port } from "@/components/mapbox/MapboxMap";
+import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
 
 // Local Assets
@@ -39,11 +39,11 @@ const imgRectangle4137 = "/images/figma/harbor-view.png";
 const imgRectangle4138 = "/images/figma/aerial-coastline.png";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "Company", href: "#company" },
-  { label: "Services", href: "#services" },
-  { label: "Destinations", href: "#destinations" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "Company", href: "/company" },
+  { label: "Services", href: "/services" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const navCta = {
@@ -76,17 +76,17 @@ const stats = [
 ];
 
 const companyLinks = [
-  { label: "About Us", href: "#company" },
-  { label: "Our Team", href: "#company" },
-  { label: "Certifications", href: "#company" },
-  { label: "Sustainability", href: "#company" },
+  { label: "About Us", href: "/company" },
+  { label: "Our Team", href: "/company" },
+  { label: "Certifications", href: "/company" },
+  { label: "Sustainability", href: "/company" },
 ];
 
 const serviceLinks = [
-  { label: "Shore Excursions", href: "#services" },
-  { label: "VIP Services", href: "#services" },
-  { label: "Group Tours", href: "#services" },
-  { label: "Private Transfers", href: "#services" },
+  { label: "Shore Excursions", href: "/services" },
+  { label: "VIP Services", href: "/services" },
+  { label: "Group Tours", href: "/services" },
+  { label: "Private Transfers", href: "/services" },
 ];
 
 const distinctionSlides = [
@@ -563,10 +563,13 @@ export default function Home() {
               reputation as Greece&apos;s most leading DMC.
             </p>
             <Button
+              asChild
               variant="link"
               className="mt-8 w-fit px-0 text-[18px] font-bold text-[#33305e] hover:text-[#51d2c6]"
             >
-              Explore All Destinations <ArrowRight className="ml-2 h-5 w-5" />
+              <Link href="/destinations">
+                Explore All Destinations <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
           </div>
 

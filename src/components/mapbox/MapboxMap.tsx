@@ -16,6 +16,7 @@ export type Port = {
   coordinates: [number, number];
   link: string;
   category: "Major" | "Hidden Gem";
+  region: string;
 };
 
 type PortGeoProperties = {
@@ -23,6 +24,7 @@ type PortGeoProperties = {
   fact: string;
   link: string;
   category: Port["category"];
+  region: string;
 };
 
 const buildPortsGeojson = (
@@ -37,6 +39,7 @@ const buildPortsGeojson = (
       fact: port.fact,
       link: port.link,
       category: port.category,
+      region: port.region,
     },
     geometry: {
       type: "Point",
@@ -52,6 +55,7 @@ export const PORTS: Port[] = [
     coordinates: [23.6441, 37.9429],
     link: "#services",
     category: "Major",
+    region: "Attica",
   },
   {
     name: "Mykonos",
@@ -59,6 +63,7 @@ export const PORTS: Port[] = [
     coordinates: [25.3264, 37.4465],
     link: "#services",
     category: "Major",
+    region: "Cyclades",
   },
   {
     name: "Paros",
@@ -66,6 +71,7 @@ export const PORTS: Port[] = [
     coordinates: [25.1506, 37.0842],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Milos",
@@ -73,6 +79,7 @@ export const PORTS: Port[] = [
     coordinates: [24.4467, 36.7267],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Folegandros",
@@ -80,6 +87,7 @@ export const PORTS: Port[] = [
     coordinates: [24.9542, 36.6271],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Corfu",
@@ -87,6 +95,7 @@ export const PORTS: Port[] = [
     coordinates: [19.9192, 39.6243],
     link: "#services",
     category: "Major",
+    region: "Ionian",
   },
   {
     name: "Heraklion",
@@ -94,6 +103,7 @@ export const PORTS: Port[] = [
     coordinates: [25.1326, 35.3394],
     link: "#services",
     category: "Major",
+    region: "Crete",
   },
   {
     name: "Souda Bay (Chania)",
@@ -101,6 +111,7 @@ export const PORTS: Port[] = [
     coordinates: [24.0746, 35.4886],
     link: "#services",
     category: "Major",
+    region: "Crete",
   },
   {
     name: "Santorini",
@@ -108,6 +119,7 @@ export const PORTS: Port[] = [
     coordinates: [25.4325, 36.4150],
     link: "#services",
     category: "Major",
+    region: "Cyclades",
   },
   {
     name: "Katakolon",
@@ -115,6 +127,7 @@ export const PORTS: Port[] = [
     coordinates: [21.3172, 37.6578],
     link: "#services",
     category: "Major",
+    region: "Peloponnese",
   },
   {
     name: "Thessaloniki",
@@ -122,6 +135,7 @@ export const PORTS: Port[] = [
     coordinates: [22.9447, 40.6401],
     link: "#services",
     category: "Major",
+    region: "Macedonia",
   },
   {
     name: "Volos",
@@ -129,6 +143,7 @@ export const PORTS: Port[] = [
     coordinates: [22.9482, 39.3598],
     link: "#services",
     category: "Major",
+    region: "Thessaly",
   },
   {
     name: "Kavala",
@@ -136,6 +151,7 @@ export const PORTS: Port[] = [
     coordinates: [24.4126, 40.9355],
     link: "#services",
     category: "Hidden Gem",
+    region: "Macedonia",
   },
   {
     name: "Rhodes",
@@ -143,6 +159,7 @@ export const PORTS: Port[] = [
     coordinates: [28.2279, 36.4435],
     link: "#services",
     category: "Major",
+    region: "Dodecanese",
   },
   {
     name: "Naxos",
@@ -150,6 +167,7 @@ export const PORTS: Port[] = [
     coordinates: [25.3763, 37.1040],
     link: "#services",
     category: "Major",
+    region: "Cyclades",
   },
   {
     name: "Syros",
@@ -157,6 +175,7 @@ export const PORTS: Port[] = [
     coordinates: [24.9432, 37.4446],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Kefalonia",
@@ -164,6 +183,7 @@ export const PORTS: Port[] = [
     coordinates: [20.4893, 38.1754],
     link: "#services",
     category: "Major",
+    region: "Ionian",
   },
   {
     name: "Zakynthos",
@@ -171,13 +191,15 @@ export const PORTS: Port[] = [
     coordinates: [20.8977, 37.7811],
     link: "#services",
     category: "Major",
+    region: "Ionian",
   },
   {
-    name: "Ithace",
+    name: "Ithaca",
     fact: "Legendary home of Odysseus with a tranquil harbor.",
     coordinates: [20.7200, 38.3664],
     link: "#services",
     category: "Hidden Gem",
+    region: "Ionian",
   },
   {
     name: "Kithira",
@@ -185,13 +207,15 @@ export const PORTS: Port[] = [
     coordinates: [23.0012, 36.2742],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
-    name: "Paxous",
+    name: "Paxos",
     fact: "Small Ionian island with turquoise coves and olive groves.",
     coordinates: [20.1854, 39.2029],
     link: "#services",
     category: "Hidden Gem",
+    region: "Ionian",
   },
   {
     name: "Patmos",
@@ -199,6 +223,7 @@ export const PORTS: Port[] = [
     coordinates: [26.5473, 37.3086],
     link: "#services",
     category: "Major",
+    region: "Dodecanese",
   },
   {
     name: "Kos",
@@ -206,6 +231,7 @@ export const PORTS: Port[] = [
     coordinates: [27.2877, 36.8932],
     link: "#services",
     category: "Major",
+    region: "Dodecanese",
   },
   {
     name: "Nisyros",
@@ -213,6 +239,7 @@ export const PORTS: Port[] = [
     coordinates: [27.1633, 36.6167],
     link: "#services",
     category: "Hidden Gem",
+    region: "Dodecanese",
   },
   {
     name: "Skiathos",
@@ -220,6 +247,7 @@ export const PORTS: Port[] = [
     coordinates: [23.4897, 39.1612],
     link: "#services",
     category: "Hidden Gem",
+    region: "Sporades",
   },
   {
     name: "Skopelos",
@@ -227,6 +255,7 @@ export const PORTS: Port[] = [
     coordinates: [23.7287, 39.1210],
     link: "#services",
     category: "Hidden Gem",
+    region: "Sporades",
   },
   {
     name: "Sifnos",
@@ -234,6 +263,7 @@ export const PORTS: Port[] = [
     coordinates: [24.6974, 36.9730],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Serifos",
@@ -241,6 +271,7 @@ export const PORTS: Port[] = [
     coordinates: [24.5212, 37.1484],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Spetses",
@@ -248,6 +279,7 @@ export const PORTS: Port[] = [
     coordinates: [23.1573, 37.2614],
     link: "#services",
     category: "Hidden Gem",
+    region: "Saronic",
   },
   {
     name: "Hydra",
@@ -255,6 +287,7 @@ export const PORTS: Port[] = [
     coordinates: [23.4667, 37.3499],
     link: "#services",
     category: "Hidden Gem",
+    region: "Saronic",
   },
   {
     name: "Aegina",
@@ -262,6 +295,7 @@ export const PORTS: Port[] = [
     coordinates: [23.4270, 37.7466],
     link: "#services",
     category: "Hidden Gem",
+    region: "Saronic",
   },
   {
     name: "Ios",
@@ -269,6 +303,7 @@ export const PORTS: Port[] = [
     coordinates: [25.2827, 36.7231],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Amorgos",
@@ -276,6 +311,7 @@ export const PORTS: Port[] = [
     coordinates: [25.8616, 36.8332],
     link: "#services",
     category: "Hidden Gem",
+    region: "Cyclades",
   },
   {
     name: "Lemnos",
@@ -283,6 +319,7 @@ export const PORTS: Port[] = [
     coordinates: [25.0627, 39.8780],
     link: "#services",
     category: "Hidden Gem",
+    region: "North Aegean",
   },
   {
     name: "Thassos",
@@ -290,6 +327,7 @@ export const PORTS: Port[] = [
     coordinates: [24.7097, 40.7783],
     link: "#services",
     category: "Hidden Gem",
+    region: "North Aegean",
   },
   {
     name: "Chios",
@@ -297,6 +335,7 @@ export const PORTS: Port[] = [
     coordinates: [26.1383, 38.3712],
     link: "#services",
     category: "Hidden Gem",
+    region: "North Aegean",
   },
   {
     name: "Kalamata",
@@ -304,6 +343,7 @@ export const PORTS: Port[] = [
     coordinates: [22.1142, 37.0379],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
     name: "Nafplio",
@@ -311,6 +351,7 @@ export const PORTS: Port[] = [
     coordinates: [22.8016, 37.5673],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
     name: "Pylos",
@@ -318,6 +359,7 @@ export const PORTS: Port[] = [
     coordinates: [21.6962, 36.9124],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
     name: "Gytheio",
@@ -325,6 +367,7 @@ export const PORTS: Port[] = [
     coordinates: [22.5650, 36.7550],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
     name: "Monemvasia",
@@ -332,6 +375,7 @@ export const PORTS: Port[] = [
     coordinates: [23.0560, 36.6876],
     link: "#services",
     category: "Hidden Gem",
+    region: "Peloponnese",
   },
   {
     name: "Igoumenitsa",
@@ -339,6 +383,7 @@ export const PORTS: Port[] = [
     coordinates: [20.2650, 39.5030],
     link: "#services",
     category: "Hidden Gem",
+    region: "Epirus",
   },
 ];
 
@@ -567,7 +612,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
       map.remove();
       mapRef.current = null;
     };
-  }, []); // Only run once on mount
+  }, [ports]); // Only run once on mount
 
   return (
     <div
