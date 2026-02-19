@@ -24,12 +24,33 @@ const navItems = [
 
 const navCta = {
   label: "Get Quote",
-  href: "mailto:info@excursionsgreece.com?subject=Quote%20Request",
+  href: "/contact",
 };
 
 const wrap = "w-full px-[24px] sm:px-[40px] lg:px-[60px] 2xl:px-[80px]";
 
 export default function DestinationsPage() {
+  const portsByRegion = PORTS.reduce<Record<string, (typeof PORTS)[number][]>>(
+    (acc, port) => {
+      if (!acc[port.region]) {
+        acc[port.region] = [];
+      }
+
+      acc[port.region].push(port);
+      return acc;
+    },
+    {},
+  );
+
+  const regionGroups = Object.entries(portsByRegion)
+    .sort(([regionA], [regionB]) => regionA.localeCompare(regionB))
+    .map(([region, ports]) => ({
+      region,
+      ports: [...ports].sort((portA, portB) =>
+        portA.name.localeCompare(portB.name),
+      ),
+    }));
+
   return (
     <div className="bg-white text-[#33305e] selection:bg-[#96e0d9] selection:text-[#33305e] font-[var(--font-manrope)]">
       {/* Header / Nav */}
@@ -146,19 +167,33 @@ export default function DestinationsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-[#33305e]/10 border border-[#33305e]/10">
-            {PORTS.map((port, index) => (
-              <div 
-                key={index} 
-                className="bg-white p-8 group transition-all duration-500 hover:bg-[#33305e] hover:text-white"
-              >
-                <MapPin className="w-5 h-5 text-[#51d2c6] mb-6 transition-colors duration-500 group-hover:text-[#96e0d9]" />
-                <h3 className="font-[var(--font-syne)] font-bold text-[20px] mb-2">
-                  {port.name}
-                </h3>
-                <p className="text-[14px] text-[#33305e]/60 font-medium uppercase tracking-widest group-hover:text-white/60 transition-colors">
-                  {port.region}
-                </p>
+          <div className="space-y-12">
+            {regionGroups.map(({ region, ports }) => (
+              <div key={region} className="overflow-hidden border border-[#33305e]/10 bg-white">
+                <div className="flex items-center justify-between border-b border-[#33305e]/10 bg-[#f8f9fa] px-6 py-5 sm:px-8">
+                  <h3 className="font-[var(--font-syne)] text-[24px] font-bold text-[#33305e]">
+                    {region}
+                  </h3>
+                  <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[#33305e]/60">
+                    {ports.length} {ports.length === 1 ? "port" : "ports"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#33305e]/10">
+                  {ports.map((port) => (
+                    <div
+                      key={port.name}
+                      className="bg-white p-8 group transition-all duration-500 hover:bg-[#33305e] hover:text-white"
+                    >
+                      <MapPin className="w-5 h-5 text-[#51d2c6] mb-6 transition-colors duration-500 group-hover:text-[#96e0d9]" />
+                      <h4 className="font-[var(--font-syne)] font-bold text-[20px] mb-2">
+                        {port.name}
+                      </h4>
+                      <p className="text-[14px] text-[#33305e]/60 font-medium uppercase tracking-widest group-hover:text-white/60 transition-colors">
+                        {port.category}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -212,31 +247,29 @@ export default function DestinationsPage() {
 
               <div className="space-y-6">
                 <a
-                  href="mailto:info@excursionsgreece.com"
+                  href="mailto:operations@excursionsgreece.com"
                   className="flex items-center gap-5 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10">
                     <Mail className="h-5 w-5" />
                   </div>
-                  info@excursionsgreece.com
+                  operations@excursionsgreece.com
                 </a>
                 <a
-                  href="tel:+302104567890"
+                  href="tel:+302104519867"
                   className="flex items-center gap-5 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10">
                     <Phone className="h-5 w-5" />
                   </div>
-                  +30 210 456 7890
+                  21 0451 9867
                 </a>
                 <div className="flex items-start gap-5 text-[18px] font-medium">
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10 shrink-0">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span className="leading-snug">
-                    123 Marina Boulevard
-                    <br />
-                    Piraeus, Greece 18537
+                    Ακτή Μιαούλη 81, Πειραιάς 185 38
                   </span>
                 </div>
               </div>

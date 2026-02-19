@@ -41,7 +41,7 @@ const navItems = [
 
 const navCta = {
   label: "Get Quote",
-  href: "mailto:info@excursionsgreece.com?subject=Quote%20Request",
+  href: "/contact",
 };
 
 const wrap = "w-full px-[24px] sm:px-[40px] lg:px-[60px] 2xl:px-[80px]";
@@ -352,31 +352,29 @@ export default function CompanyPage() {
 
               <div className="space-y-6">
                 <a
-                  href="mailto:info@excursionsgreece.com"
+                  href="mailto:operations@excursionsgreece.com"
                   className="flex items-center gap-5 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10">
                     <Mail className="h-5 w-5" />
                   </div>
-                  info@excursionsgreece.com
+                  operations@excursionsgreece.com
                 </a>
                 <a
-                  href="tel:+302104567890"
+                  href="tel:+302104519867"
                   className="flex items-center gap-5 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10">
                     <Phone className="h-5 w-5" />
                   </div>
-                  +30 210 456 7890
+                  21 0451 9867
                 </a>
                 <div className="flex items-start gap-5 text-[18px] font-medium">
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 border border-white/10 shrink-0">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span className="leading-snug">
-                    123 Marina Boulevard
-                    <br />
-                    Piraeus, Greece 18537
+                    Ακτή Μιαούλη 81, Πειραιάς 185 38
                   </span>
                 </div>
               </div>

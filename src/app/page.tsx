@@ -48,25 +48,25 @@ const navItems = [
 
 const navCta = {
   label: "Get Quote",
-  href: "mailto:info@excursionsgreece.com?subject=Quote%20Request",
+  href: "/contact",
 };
 
-const logoRowOne = [
-  "Phoenix Reisen",
-  "The World",
-  "Noble Caledonia",
-  "Saga Cruises",
-  "Olivia",
-  "Virgin Voyages",
-  "Semester at Sea",
-];
-const logoRowTwo = [
-  "Mystic Cruises",
-  "Crystal Cruises",
-  "Hapag-Lloyd Cruises",
+const partnerLogos = [
   "APT Luxury Travel",
+  "Crystal Cruises",
+  "Ensemble",
   "Explora Journeys",
+  "Hapag-Lloyd Cruises",
+  "Mystic Cruises",
+  "Noble Caledonia",
+  "Olivia",
+  "Phoenix Reisen",
+  "Saga Cruises",
+  "Semester at Sea",
+  "The World",
   "Vidanta World",
+  "Viking Cruises",
+  "Virgin Voyages",
 ];
 
 const stats = [
@@ -142,7 +142,7 @@ const serviceCards = [
     description:
       "Seamless embarkation and disembarkation at every Greek port of call.",
     image:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+      "/images/DJI_20260128_113510_086.jpg",
   },
   {
     title: "Cultural Experts",
@@ -381,7 +381,7 @@ export default function Home() {
 
         <div className="mt-8 border-y border-[#33305e]/10 py-12">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-12 gap-x-8 text-center">
-            {[...logoRowOne, ...logoRowTwo].map((logo, i) => (
+            {partnerLogos.map((logo, i) => (
               <div
                 key={`${logo}-${i}`}
                 className="flex items-center justify-center"
@@ -629,31 +629,29 @@ export default function Home() {
 
               <div className="space-y-4">
                 <a
-                  href="mailto:info@excursionsgreece.com"
+                  href="mailto:operations@excursionsgreece.com"
                   className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5">
                     <Mail className="h-5 w-5" />
                   </div>
-                  info@excursionsgreece.com
+                  operations@excursionsgreece.com
                 </a>
                 <a
-                  href="tel:+302104567890"
+                  href="tel:+302104519867"
                   className="flex items-center gap-4 text-[18px] font-medium transition-colors hover:text-[#96e0d9]"
                 >
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5">
                     <Phone className="h-5 w-5" />
                   </div>
-                  +30 210 456 7890
+                  21 0451 9867
                 </a>
                 <div className="flex items-start gap-4 text-[18px] font-medium">
                   <div className="flex h-12 w-12 items-center justify-center bg-white/5 shrink-0">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span>
-                    123 Marina Boulevard
-                    <br />
-                    Piraeus, Greece 18537
+                    Ακτή Μιαούλη 81, Πειραιάς 185 38
                   </span>
                 </div>
               </div>
