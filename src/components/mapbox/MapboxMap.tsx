@@ -10,6 +10,44 @@ const MAP_STYLE = "mapbox://styles/onepunchmob/cmjizdqe8005p01sdgkrrh27g";
 const MAP_CENTER: [number, number] = [23.5, 38.0];
 const MAP_ZOOM = 5.2;
 
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+const PIRAEUS_COORDS: [number, number] = [23.6441, 37.9429];
+
+// Map port regions to scrollytelling region groups
+const REGION_GROUP_MAP: Record<string, string> = {
+  Cyclades: "Cyclades",
+  Crete: "Crete",
+  Dodecanese: "Dodecanese",
+  Ionian: "Ionian",
+  Epirus: "Ionian",
+  Attica: "Mainland",
+  Macedonia: "Mainland",
+  Thessaly: "Mainland",
+  Sporades: "Mainland",
+  "North Aegean": "Mainland",
+  "Central Greece": "Mainland",
+  Peloponnese: "Mainland",
+  Saronic: "Mainland",
+};
+
+const DISCOVER_GROUP_TO_PORT_REGIONS: Record<string, string[]> = {
+  Cyclades: ["Cyclades"],
+  Crete: ["Crete"],
+  Dodecanese: ["Dodecanese"],
+  Ionian: ["Ionian", "Epirus"],
+  Mainland: [
+    "Attica",
+    "Macedonia",
+    "Thessaly",
+    "Sporades",
+    "North Aegean",
+    "Central Greece",
+    "Peloponnese",
+    "Saronic",
+  ],
+};
+
 export type Port = {
   name: string;
   fact: string;
@@ -214,12 +252,15 @@ const smoothRouteCoordinates = (
 
 const interpolateAlongLine = (
   coordinates: [number, number][],
-  progress: number
+  progress: number,
+  loop = true
 ): [number, number] => {
   if (coordinates.length === 0) return [0, 0];
   if (coordinates.length === 1) return coordinates[0];
 
-  const normalizedProgress = ((progress % 1) + 1) % 1;
+  const normalizedProgress = loop
+    ? ((progress % 1) + 1) % 1
+    : clamp01(progress);
   const segmentLengths: number[] = [];
   let totalLength = 0;
 
@@ -250,6 +291,148 @@ const interpolateAlongLine = (
   }
 
   return coordinates[coordinates.length - 1];
+};
+
+const MAJOR_PORT_EMOJI_FALLBACK = [
+  "\u{1F30A}",      // wave
+  "\u{2600}\uFE0F", // sun
+  "\u{26F5}",       // sailboat
+  "\u{1F9ED}",      // compass
+  "\u{1F60E}",      // sunglasses face
+];
+
+const HIDDEN_GEM_PORT_EMOJI_FALLBACK = [
+  "\u{1F3D6}\uFE0F", // beach with umbrella
+  "\u{1F334}",       // palm tree
+  "\u{1F30A}",       // wave
+  "\u{1F34B}",       // lemon
+  "\u{1F347}",       // grapes
+  "\u{1F60E}",       // sunglasses face
+];
+
+const PORT_EMOJI_OVERRIDES: Record<string, string[]> = {
+  Milos: [
+    "\u{2764}\uFE0F",
+    "\u{1F496}",
+    "\u{1F970}",
+  ],
+  Santorini: [
+    "\u{1F305}",
+    "\u{1F377}",
+    "\u{2764}\uFE0F",
+  ],
+  Mykonos: [
+    "\u{1F389}",
+    "\u{1F60E}",
+    "\u{1F334}",
+  ],
+  Corfu: [
+    "\u{1F3F0}",
+    "\u{1F334}",
+    "\u{1F30A}",
+  ],
+  Rhodes: [
+    "\u{1F3F0}",
+    "\u{2600}\uFE0F",
+    "\u{1F3D6}\uFE0F",
+  ],
+  Hydra: [
+    "\u{1F434}",
+    "\u{1F6A4}",
+    "\u{1F30A}",
+  ],
+  Zakynthos: [
+    "\u{1F422}",
+    "\u{1F30A}",
+    "\u{1F3D6}\uFE0F",
+  ],
+  Patmos: [
+    "\u{26EA}",
+    "\u{1F9ED}",
+    "\u{2600}\uFE0F",
+  ],
+  Nisyros: [
+    "\u{1F30B}",
+    "\u{26F0}\uFE0F",
+    "\u{2600}\uFE0F",
+  ],
+  Kalamata: [
+    "\u{1F377}",
+    "\u{1F347}",
+    "\u{1F34B}",
+  ],
+  Aegina: [
+    "\u{1F3DB}\uFE0F",
+    "\u{2600}\uFE0F",
+    "\u{1F347}",
+  ],
+  Nafplio: [
+    "\u{2764}\uFE0F",
+    "\u{1F3F0}",
+    "\u{1F305}",
+  ],
+  Monemvasia: [
+    "\u{1F3F0}",
+    "\u{1F305}",
+    "\u{1F377}",
+  ],
+};
+
+const FACT_EMOJI_RULES: Array<{ pattern: RegExp; emojis: string[] }> = [
+  {
+    pattern: /(volcanic|caldera|lunar)/i,
+    emojis: ["\u{1F30B}", "\u{1F305}", "\u{26F0}\uFE0F"],
+  },
+  {
+    pattern: /(beach|beaches|bay|bays|coves|harbor|waterfront|promenade|gulf|seaside|turquoise)/i,
+    emojis: ["\u{1F3D6}\uFE0F", "\u{1F30A}", "\u{26F5}"],
+  },
+  {
+    pattern: /(medieval|fortress|castle|venetian|mansions|old town|byzantine)/i,
+    emojis: ["\u{1F3F0}", "\u{1F3DB}\uFE0F", "\u{1F3A8}"],
+  },
+  {
+    pattern: /(ancient|olympia|delphi|knossos|asklepieion|temple|history)/i,
+    emojis: ["\u{1F3DB}\uFE0F", "\u{1F9ED}", "\u{1F3AF}"],
+  },
+  {
+    pattern: /(monaster|sacred)/i,
+    emojis: ["\u{26EA}", "\u{1F9ED}", "\u{2600}\uFE0F"],
+  },
+  {
+    pattern: /(cuisine|wine|olives|olive|pistachios|mastic)/i,
+    emojis: ["\u{1F377}", "\u{1F347}", "\u{1F34B}"],
+  },
+  {
+    pattern: /(longevity|laid-back|tranquil|quiet|serene)/i,
+    emojis: ["\u{1F60E}", "\u{1F334}", "\u{2600}\uFE0F"],
+  },
+  {
+    pattern: /(mount|cliffs|rugged|peaks|hilltop|mountain)/i,
+    emojis: ["\u{26F0}\uFE0F", "\u{1F305}", "\u{1F9ED}"],
+  },
+  {
+    pattern: /(maritime|sailing|gateway|adriatic|port)/i,
+    emojis: ["\u{2693}\uFE0F", "\u{26F5}", "\u{1F9ED}"],
+  },
+];
+
+const getPortEmojiPool = (port: Port): string[] => {
+  const override = PORT_EMOJI_OVERRIDES[port.name];
+  if (override && override.length > 0) {
+    return override;
+  }
+
+  const contextual = FACT_EMOJI_RULES.flatMap((rule) =>
+    rule.pattern.test(port.fact) ? rule.emojis : []
+  );
+  const fallback =
+    port.category === "Major"
+      ? MAJOR_PORT_EMOJI_FALLBACK
+      : HIDDEN_GEM_PORT_EMOJI_FALLBACK;
+
+  const deduped = [...new Set([...contextual, ...fallback])];
+  return deduped.length > 0 ? deduped : HIDDEN_GEM_PORT_EMOJI_FALLBACK;
 };
 
 const buildRoutesGeojson = (ports: Port[]): RouteFeatureCollection => {
@@ -777,17 +960,84 @@ export const PORTS: Port[] = [
 type MapboxMapProps = {
   className?: string;
   ports?: Port[];
+  animated?: boolean;
+  activeRegion?: string | null;
+  showShip?: boolean;
 };
 
-export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
+export function MapboxMap({
+  className,
+  ports = PORTS,
+  animated = false,
+  activeRegion,
+  showShip = animated,
+}: MapboxMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const routesGeojsonRef = useRef<RouteFeatureCollection>(EMPTY_ROUTE_GEOJSON);
+  const portsTransitionFrameRef = useRef<number | null>(null);
   const latestPortsRef = useRef<Port[]>(ports);
+  const revealStartRef = useRef<number | null>(null);
+  const revealCompleteRef = useRef(false);
+  const animatedRef = useRef(animated);
+  const showShipRef = useRef(showShip);
+  const routesRevisionRef = useRef(0);
+  const prevRegionRef = useRef<string | null | undefined>(activeRegion);
+  const hasReceivedRegionRef = useRef(false);
 
   useEffect(() => {
     latestPortsRef.current = ports;
+    routesRevisionRef.current += 1;
   }, [ports]);
+
+  useEffect(() => {
+    showShipRef.current = showShip;
+  }, [showShip]);
+
+  // Region filtering effect — only runs when activeRegion actually changes (not on mount)
+  useEffect(() => {
+    // Skip the very first render
+    if (!hasReceivedRegionRef.current) {
+      hasReceivedRegionRef.current = true;
+      prevRegionRef.current = activeRegion;
+      return;
+    }
+
+    // Skip if value hasn't actually changed
+    if (activeRegion === prevRegionRef.current) return;
+    prevRegionRef.current = activeRegion;
+
+    const map = mapRef.current;
+    if (!map || !map.isStyleLoaded()) return;
+
+    // Filter visible ports to the active discover region (and reset when inactive)
+    const portLayerFilter =
+      activeRegion && DISCOVER_GROUP_TO_PORT_REGIONS[activeRegion]
+        ? ([
+            "in",
+            ["get", "region"],
+            ["literal", DISCOVER_GROUP_TO_PORT_REGIONS[activeRegion]],
+          ] as unknown as mapboxgl.FilterSpecification)
+        : null;
+
+    (["ports-glow", "ports"] as const).forEach((layerId) => {
+      if (!map.getLayer(layerId)) return;
+      map.setFilter(layerId, portLayerFilter);
+    });
+
+    // Dim/undim ports based on region
+    const portsSource = map.getSource("ports");
+    if (!portsSource) return;
+    const currentPorts = latestPortsRef.current;
+    currentPorts.forEach((port) => {
+      const group = REGION_GROUP_MAP[port.region] || "Mainland";
+      const dimmed = activeRegion ? group !== activeRegion : false;
+      map.setFeatureState(
+        { source: "ports", id: port.name },
+        { dimmed }
+      );
+    });
+  }, [activeRegion]);
 
   // Update map source when ports prop changes
   useEffect(() => {
@@ -798,6 +1048,11 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
     routesGeojsonRef.current = routesGeojson;
 
     if (!map.getSource("ports")) return;
+
+    if (portsTransitionFrameRef.current !== null) {
+      window.cancelAnimationFrame(portsTransitionFrameRef.current);
+      portsTransitionFrameRef.current = null;
+    }
 
     const portsGeojson = buildPortsGeojson(ports);
     (map.getSource("ports") as mapboxgl.GeoJSONSource).setData(portsGeojson);
@@ -815,6 +1070,41 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
         buildVesselGeojson(routesGeojson, performance.now() / 1000)
       );
     }
+
+    // Smoothly fade updated route/port items so data swaps feel intentional.
+    const routeFeatureIds = routesGeojson.features
+      .map((feature) => feature.id)
+      .filter((id): id is string | number => id !== undefined && id !== null);
+    const portIds = ports.map((port) => port.name);
+
+    routeFeatureIds.forEach((id) => {
+      map.setFeatureState({ source: "routes", id }, { revealProgress: 0 });
+    });
+    portIds.forEach((id) => {
+      map.setFeatureState({ source: "ports", id }, { revealProgress: 0 });
+    });
+
+    const transitionStart = performance.now();
+    const TRANSITION_DURATION_MS = 320;
+    const animateItemsIn = (timestamp: number) => {
+      const t = clamp01((timestamp - transitionStart) / TRANSITION_DURATION_MS);
+      const progress = easeOutCubic(t);
+
+      routeFeatureIds.forEach((id) => {
+        map.setFeatureState({ source: "routes", id }, { revealProgress: progress });
+      });
+      portIds.forEach((id) => {
+        map.setFeatureState({ source: "ports", id }, { revealProgress: progress });
+      });
+
+      if (t < 1) {
+        portsTransitionFrameRef.current = window.requestAnimationFrame(animateItemsIn);
+      } else {
+        portsTransitionFrameRef.current = null;
+      }
+    };
+
+    portsTransitionFrameRef.current = window.requestAnimationFrame(animateItemsIn);
   }, [ports]);
 
   useEffect(() => {
@@ -824,6 +1114,8 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
     let animationFrame: number | null = null;
     let dashFrameIndex = 0;
     let lastDashUpdate = 0;
+
+    const isAnimated = animatedRef.current;
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
@@ -859,6 +1151,36 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
         data: buildVesselGeojson(routesGeojsonRef.current, 0),
       });
 
+      // Mouse glow source
+      map.addSource("mouse-glow", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+
+      // Mouse glow layers (underneath everything)
+      map.addLayer({
+        id: "mouse-glow-outer",
+        type: "circle",
+        source: "mouse-glow",
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 80, 8, 200],
+          "circle-color": "rgba(81, 210, 198, 0.06)",
+          "circle-blur": 1,
+          "circle-opacity": 1,
+        },
+      });
+      map.addLayer({
+        id: "mouse-glow-inner",
+        type: "circle",
+        source: "mouse-glow",
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 35, 8, 90],
+          "circle-color": "rgba(81, 210, 198, 0.1)",
+          "circle-blur": 0.7,
+          "circle-opacity": 1,
+        },
+      });
+
       map.addLayer({
         id: "routes-glow",
         type: "line",
@@ -884,7 +1206,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
             8,
             8.6,
           ],
-          "line-opacity": 0.8,
+          "line-opacity": ["*", 0.8, ["coalesce", ["feature-state", "revealProgress"], 1]],
           "line-blur": [
             "interpolate",
             ["linear"],
@@ -916,7 +1238,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
             8,
             2.8,
           ],
-          "line-opacity": 0.5,
+          "line-opacity": ["*", 0.5, ["coalesce", ["feature-state", "revealProgress"], 1]],
         },
       });
 
@@ -954,7 +1276,7 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
             "rgba(255, 255, 255, 0)",
           ],
           "line-dasharray": ROUTE_DASH_SEQUENCE[0],
-          "line-opacity": 0.95,
+          "line-opacity": ["*", 0.95, ["coalesce", ["feature-state", "revealProgress"], 1]],
         },
       });
 
@@ -1037,14 +1359,14 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
             "match",
             ["get", "category"],
             "Major",
-            "rgba(81, 210, 198, 0.35)", // Teal glow for Major
-            "rgba(255, 183, 77, 0.35)", // Orange glow for Hidden Gems
+            "rgba(81, 210, 198, 0.35)",
+            "rgba(255, 183, 77, 0.35)",
           ],
           "circle-opacity": [
-            "case",
-            ["boolean", ["feature-state", "hover"], false],
-            0.9,
-            0.6,
+            "*",
+            ["case", ["boolean", ["feature-state", "hover"], false], 0.9, 0.6],
+            ["coalesce", ["feature-state", "revealProgress"], 1],
+            ["case", ["boolean", ["feature-state", "dimmed"], false], 0, 1],
           ],
         },
       });
@@ -1071,8 +1393,8 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
               "match",
               ["get", "category"],
               "Major",
-              "#51d2c6", // Teal for Major
-              "#ffb74d", // Orange for Hidden Gems
+              "#51d2c6",
+              "#ffb74d",
             ],
           ],
           "circle-stroke-width": [
@@ -1093,22 +1415,100 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
             ],
             "rgba(255, 255, 255, 0.9)",
           ],
+          "circle-opacity": [
+            "*",
+            ["coalesce", ["feature-state", "revealProgress"], 1],
+            ["case", ["boolean", ["feature-state", "dimmed"], false], 0, 1],
+          ],
         },
       });
+
+      // Pre-compute reveal schedule for animated mode
+      type RevealEntry = { id: string | number; source: "routes" | "ports"; delay: number; duration: number };
+      const revealSchedule: RevealEntry[] = [];
+
+      if (isAnimated) {
+        // Set initial revealProgress to 0 for all features
+        routesGeojsonRef.current.features.forEach((f) => {
+          if (f.id != null) {
+            map.setFeatureState({ source: "routes", id: f.id }, { revealProgress: 0 });
+          }
+        });
+        currentPorts.forEach((p) => {
+          map.setFeatureState({ source: "ports", id: p.name }, { revealProgress: 0 });
+        });
+
+        // Calculate distances from Piraeus for routes
+        routesGeojsonRef.current.features.forEach((f) => {
+          const coords = f.geometry.coordinates as [number, number][];
+          const mid = coords[Math.floor(coords.length / 2)];
+          const dist = Math.hypot(mid[0] - PIRAEUS_COORDS[0], mid[1] - PIRAEUS_COORDS[1]);
+          revealSchedule.push({
+            id: f.id!,
+            source: "routes",
+            delay: (dist / 12) * 2800,
+            duration: 600,
+          });
+        });
+
+        // Calculate distances from Piraeus for ports
+        currentPorts.forEach((p) => {
+          const dist = Math.hypot(p.coordinates[0] - PIRAEUS_COORDS[0], p.coordinates[1] - PIRAEUS_COORDS[1]);
+          revealSchedule.push({
+            id: p.name,
+            source: "ports",
+            delay: (dist / 12) * 2800 + 100,
+            duration: 600,
+          });
+        });
+
+        revealSchedule.sort((a, b) => a.delay - b.delay);
+
+      }
 
       const animateSeaLanes = (timestamp: number) => {
         const currentMap = mapRef.current;
         if (!currentMap) return;
 
-        const vesselsSource = currentMap.getSource("route-vessels") as
-          | mapboxgl.GeoJSONSource
-          | undefined;
-        if (vesselsSource) {
-          vesselsSource.setData(
-            buildVesselGeojson(routesGeojsonRef.current, timestamp / 1000)
-          );
+        // --- Reveal progress (animated mode) ---
+        if (isAnimated && !revealCompleteRef.current) {
+          if (revealStartRef.current === null) revealStartRef.current = timestamp;
+          const elapsed = timestamp - revealStartRef.current;
+
+          let allDone = true;
+          for (const entry of revealSchedule) {
+            const t = clamp01((elapsed - entry.delay) / entry.duration);
+            const progress = entry.source === "ports"
+              ? Math.pow(easeOutCubic(t), 0.3)
+              : easeOutCubic(t);
+            if (t < 1) allDone = false;
+            currentMap.setFeatureState(
+              { source: entry.source, id: entry.id },
+              { revealProgress: progress }
+            );
+          }
+
+          if (allDone && elapsed > 3500) {
+            revealCompleteRef.current = true;
+          }
         }
 
+        // --- Vessel movement ---
+        const shouldSkipVessels = isAnimated && !revealCompleteRef.current &&
+          revealStartRef.current !== null && (timestamp - revealStartRef.current) < 2500;
+
+        if (!shouldSkipVessels) {
+          const vesselsSource = currentMap.getSource("route-vessels") as
+            | mapboxgl.GeoJSONSource
+            | undefined;
+          if (vesselsSource) {
+            vesselsSource.setData(
+              buildVesselGeojson(routesGeojsonRef.current, timestamp / 1000)
+            );
+          }
+        }
+
+        // --- Dash animation (every 90ms) ---
         if (
           timestamp - lastDashUpdate >= 90 &&
           currentMap.getLayer("routes-flow")
@@ -1127,9 +1527,31 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
 
       animationFrame = window.requestAnimationFrame(animateSeaLanes);
 
+      // --- Mouse glow handler ---
+      map.on("mousemove", (e) => {
+        const glowSource = map.getSource("mouse-glow") as mapboxgl.GeoJSONSource | undefined;
+        if (glowSource) {
+          glowSource.setData({
+            type: "FeatureCollection",
+            features: [{
+              type: "Feature",
+              properties: {},
+              geometry: { type: "Point", coordinates: [e.lngLat.lng, e.lngLat.lat] },
+            }],
+          });
+        }
+      });
+      map.on("mouseout", () => {
+        const glowSource = map.getSource("mouse-glow") as mapboxgl.GeoJSONSource | undefined;
+        if (glowSource) {
+          glowSource.setData({ type: "FeatureCollection", features: [] });
+        }
+      });
+
       const popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false,
+        focusAfterOpen: false,
         offset: 18,
         anchor: "bottom",
         className: "map-popup",
@@ -1219,6 +1641,275 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
           if (!popupHover) popup.remove();
         }, 120);
       });
+
+      // --- Auto-touring ship marker ---
+      // Follow existing rendered sea-lane traces with a randomized route walk.
+      const measureLineLength = (coordinates: [number, number][]) => {
+        let length = 0;
+        for (let index = 0; index < coordinates.length - 1; index += 1) {
+          length += Math.hypot(
+            coordinates[index + 1][0] - coordinates[index][0],
+            coordinates[index + 1][1] - coordinates[index][1]
+          );
+        }
+        return length;
+      };
+
+      type DirectedShipLeg = {
+        from: Port;
+        to: Port;
+        coordinates: [number, number][];
+        length: number;
+      };
+
+      type ShipNetwork = {
+        portsByName: Map<string, Port>;
+        directedLegs: DirectedShipLeg[];
+        legsByFrom: Map<string, DirectedShipLeg[]>;
+      };
+
+      const buildShipNetwork = (): ShipNetwork => {
+        const portsByName = new Map(latestPortsRef.current.map((port) => [port.name, port] as const));
+        const directedLegs: DirectedShipLeg[] = [];
+        routesGeojsonRef.current.features.forEach((routeFeature) => {
+          const fromPort = portsByName.get(routeFeature.properties.from);
+          const toPort = portsByName.get(routeFeature.properties.to);
+          if (!fromPort || !toPort) return;
+
+          const coordinates = routeFeature.geometry.coordinates as [number, number][];
+          if (coordinates.length < 2) return;
+
+          const legLength = measureLineLength(coordinates);
+          if (legLength <= 0) return;
+
+          directedLegs.push({
+            from: fromPort,
+            to: toPort,
+            coordinates,
+            length: legLength,
+          });
+          directedLegs.push({
+            from: toPort,
+            to: fromPort,
+            coordinates: [...coordinates].reverse() as [number, number][],
+            length: legLength,
+          });
+        });
+
+        const legsByFrom = new Map<string, DirectedShipLeg[]>();
+        directedLegs.forEach((leg) => {
+          const existing = legsByFrom.get(leg.from.name) ?? [];
+          existing.push(leg);
+          legsByFrom.set(leg.from.name, existing);
+        });
+
+        return { portsByName, directedLegs, legsByFrom };
+      };
+
+      let shipNetwork = buildShipNetwork();
+      const hasRenderableSize =
+        map.getContainer().clientWidth > 0 && map.getContainer().clientHeight > 0;
+
+      if (showShipRef.current && hasRenderableSize && shipNetwork.directedLegs.length > 0) {
+        // Ship marker element
+        const shipEl = document.createElement("div");
+        shipEl.textContent = "\u26F4\uFE0F";
+        shipEl.style.fontSize = "32px";
+        shipEl.style.lineHeight = "1";
+        shipEl.style.width = "32px";
+        shipEl.style.height = "32px";
+        shipEl.style.display = "flex";
+        shipEl.style.alignItems = "center";
+        shipEl.style.justifyContent = "center";
+        shipEl.style.cursor = "default";
+        shipEl.style.filter = "drop-shadow(0 2px 4px rgba(0,0,0,0.3))";
+        shipEl.style.zIndex = "10";
+
+        const shipMarker = new mapboxgl.Marker({
+          element: shipEl,
+          anchor: "center",
+          offset: [0, -10],
+        })
+          .setLngLat(
+            (
+              shipNetwork.portsByName.get("Piraeus") ??
+              shipNetwork.directedLegs[0].from
+            ).coordinates
+          )
+          .addTo(map);
+
+        // Auto popup for ship
+        const shipPopup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          focusAfterOpen: false,
+          offset: 32,
+          anchor: "bottom",
+          className: "map-popup",
+        });
+
+        const DWELL_TIME = 3; // seconds at each port
+        const startDelay = isAnimated ? 5000 : 1000;
+        let tourStartTime: number | null = null;
+        const TARGET_SAIL_DURATION = 5;
+        const SHIP_EMOJI = "\u26F4\uFE0F";
+        let activeRouteRevision = routesRevisionRef.current;
+
+        const chooseRandom = <T,>(items: T[]) =>
+          items[Math.floor(Math.random() * items.length)] ?? null;
+
+        const pickNextLeg = (
+          network: ShipNetwork,
+          fromName: string,
+          avoidToName: string | null
+        ) => {
+          const candidates = network.legsByFrom.get(fromName) ?? [];
+          if (candidates.length === 0) {
+            return chooseRandom(network.directedLegs);
+          }
+
+          if (avoidToName && candidates.length > 1) {
+            const nonBacktracking = candidates.filter((leg) => leg.to.name !== avoidToName);
+            if (nonBacktracking.length > 0) {
+              return chooseRandom(nonBacktracking);
+            }
+          }
+
+          return chooseRandom(candidates);
+        };
+
+        const getLegDuration = (length: number, network: ShipNetwork) => {
+          const averageLegLength =
+            network.directedLegs.reduce((sum, leg) => sum + leg.length, 0) /
+            network.directedLegs.length;
+          const referenceSpeed = averageLegLength / TARGET_SAIL_DURATION;
+          if (!Number.isFinite(referenceSpeed) || referenceSpeed <= 0) {
+            return TARGET_SAIL_DURATION;
+          }
+          const duration = length / referenceSpeed;
+          return Math.max(2.5, Math.min(9.5, duration));
+        };
+
+        let currentPortName =
+          (shipNetwork.portsByName.get("Piraeus") ?? shipNetwork.directedLegs[0].from).name;
+        let previousPortName: string | null = null;
+        let currentLeg:
+          | { leg: DirectedShipLeg; startedAt: number; duration: number }
+          | null = null;
+        let dwellUntil: number | null = null;
+
+        const resetShipToNetwork = (preferredPortName: string | null): boolean => {
+          shipNetwork = buildShipNetwork();
+          if (shipNetwork.directedLegs.length === 0) {
+            return false;
+          }
+
+          const fallbackPort =
+            (preferredPortName
+              ? shipNetwork.portsByName.get(preferredPortName)
+              : undefined) ??
+            shipNetwork.portsByName.get("Piraeus") ??
+            shipNetwork.directedLegs[0].from;
+
+          currentPortName = fallbackPort.name;
+          previousPortName = null;
+          currentLeg = null;
+          dwellUntil = null;
+          shipEl.textContent = SHIP_EMOJI;
+          shipPopup.remove();
+          shipMarker.setLngLat(fallbackPort.coordinates);
+          return true;
+        };
+
+        const updateShip = (timestamp: number) => {
+          if (!mapRef.current) return;
+
+          if (activeRouteRevision !== routesRevisionRef.current) {
+            activeRouteRevision = routesRevisionRef.current;
+            if (!resetShipToNetwork(currentPortName)) return;
+          }
+
+          if (tourStartTime === null) tourStartTime = timestamp;
+          const elapsed = (timestamp - tourStartTime) / 1000;
+
+          if (elapsed < (startDelay / 1000)) return;
+
+          if (dwellUntil !== null) {
+            const dockedPort = shipNetwork.portsByName.get(currentPortName);
+            if (dockedPort) {
+              shipMarker.setLngLat(dockedPort.coordinates);
+            }
+            if (timestamp < dwellUntil) return;
+
+            dwellUntil = null;
+            shipEl.textContent = SHIP_EMOJI;
+            shipPopup.remove();
+          }
+
+          if (!currentLeg) {
+            shipNetwork = buildShipNetwork();
+            if (shipNetwork.directedLegs.length === 0) return;
+
+            if (!shipNetwork.portsByName.has(currentPortName)) {
+              if (!resetShipToNetwork(currentPortName)) return;
+            }
+
+            const nextLeg = pickNextLeg(shipNetwork, currentPortName, previousPortName);
+            if (!nextLeg) return;
+            previousPortName = currentPortName;
+            currentLeg = {
+              leg: nextLeg,
+              startedAt: timestamp,
+              duration: getLegDuration(nextLeg.length, shipNetwork),
+            };
+          }
+
+          const progress = clamp01((timestamp - currentLeg.startedAt) / 1000 / currentLeg.duration);
+          const pos = interpolateAlongLine(currentLeg.leg.coordinates, progress, false);
+          shipMarker.setLngLat(pos as [number, number]);
+
+          if (progress >= 1) {
+            const arrivalPort = currentLeg.leg.to;
+            currentPortName = arrivalPort.name;
+            currentLeg = null;
+            dwellUntil = timestamp + DWELL_TIME * 1000;
+
+            const emojiPool = getPortEmojiPool(arrivalPort);
+            const emoji =
+              emojiPool[Math.floor(Math.random() * emojiPool.length)] ??
+              "\u{1F3D6}\uFE0F";
+            shipEl.textContent = emoji;
+
+            const color = arrivalPort.category === "Major" ? "#51d2c6" : "#ffb74d";
+            shipPopup
+              .setLngLat(arrivalPort.coordinates)
+              .setHTML(
+                `<div class="map-popup-content">
+                  <div style="margin-bottom: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: ${color};">${arrivalPort.category}</div>
+                  <p class="map-popup-title">${arrivalPort.name}</p>
+                  <p class="map-popup-fact">${arrivalPort.fact}</p>
+                  <a class="map-popup-link" href="${arrivalPort.link}" style="background: ${color}; color: ${arrivalPort.category === 'Major' ? '#ffffff' : '#33305e'}">View experiences</a>
+                </div>`
+              )
+              .addTo(map);
+          }
+        };
+
+        // Run ship animation in its own rAF loop
+        let shipFrame: number | null = null;
+        const animateShip = (timestamp: number) => {
+          updateShip(timestamp);
+          shipFrame = window.requestAnimationFrame(animateShip);
+        };
+        shipFrame = window.requestAnimationFrame(animateShip);
+
+        // Cleanup on map remove
+        map.on("remove", () => {
+          if (shipFrame !== null) window.cancelAnimationFrame(shipFrame);
+          shipMarker.remove();
+          shipPopup.remove();
+        });
+      }
     });
 
     map.scrollZoom.disable();
@@ -1226,13 +1917,17 @@ export function MapboxMap({ className, ports = PORTS }: MapboxMapProps) {
     map.touchZoomRotate.disableRotation();
 
     return () => {
+      if (portsTransitionFrameRef.current !== null) {
+        window.cancelAnimationFrame(portsTransitionFrameRef.current);
+        portsTransitionFrameRef.current = null;
+      }
       if (animationFrame !== null) {
         window.cancelAnimationFrame(animationFrame);
       }
       map.remove();
       mapRef.current = null;
     };
-  }, [ports]);
+  }, []);
 
   return (
     <div

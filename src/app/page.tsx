@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import {
   Anchor,
@@ -29,6 +29,135 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
+
+/* ── ScrollReveal wrapper ── */
+function ScrollReveal({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "transition-all duration-700",
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ── AnimatedCounter (DOM-driven to avoid parent re-renders) ── */
+function AnimatedCounter({ target, suffix = "", duration = 2000 }: { target: number; suffix?: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.textContent = `0${suffix}`;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = `${Math.round(eased * target)}${suffix}`;
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration, suffix]);
+
+  return <span ref={ref} />;
+}
+
+/* ── Region data for scrollytelling ── */
+type DiscoverRegionName = "Cyclades" | "Crete" | "Dodecanese" | "Ionian" | "Mainland";
+
+const discoverRegionContent: Array<{
+  name: DiscoverRegionName;
+  headline: string;
+  description: string;
+}> = [
+  {
+    name: "Cyclades",
+    headline: "Sun-bleached harbors and windswept paths",
+    description: "The most iconic islands of the Aegean. Whitewashed villages cascade down volcanic cliffs, while ancient trade routes connect harbors where cruise passengers discover the beating heart of Greek island culture.",
+  },
+  {
+    name: "Crete",
+    headline: "Where myth meets the Mediterranean",
+    description: "Greece's largest island offers a continent of experiences. From the Minoan palaces of Knossos to the Venetian harbors of Chania, Crete delivers depth that rewards extended exploration.",
+  },
+  {
+    name: "Dodecanese",
+    headline: "Crusader castles and turquoise coves",
+    description: "A chain of islands stretching toward Asia Minor, each with its own distinct character. Medieval Rhodes, sacred Patmos, volcanic Nisyros — the Dodecanese reward the curious traveler.",
+  },
+  {
+    name: "Ionian",
+    headline: "Emerald waters and Venetian elegance",
+    description: "Greece's western islands offer a dramatically different character. Lush green hillsides, Italianate architecture, and some of the clearest waters in the Mediterranean create an unforgettable first impression.",
+  },
+  {
+    name: "Mainland",
+    headline: "Ancient gateways and northern horizons",
+    description: "From the great port of Piraeus to the cosmopolitan waterfront of Thessaloniki, the mainland and Sporades offer access to Greece's archaeological treasures and mountain-meets-sea landscapes.",
+  },
+];
+
+const portRegionToDiscoverRegion: Record<string, DiscoverRegionName> = {
+  Cyclades: "Cyclades",
+  Crete: "Crete",
+  Dodecanese: "Dodecanese",
+  Ionian: "Ionian",
+  Epirus: "Ionian",
+  Attica: "Mainland",
+  Macedonia: "Mainland",
+  Thessaly: "Mainland",
+  Sporades: "Mainland",
+  "North Aegean": "Mainland",
+  "Central Greece": "Mainland",
+  Peloponnese: "Mainland",
+  Saronic: "Mainland",
+};
+
+const regions = discoverRegionContent.map((region) => {
+  const regionPorts = PORTS
+    .filter((port) => {
+      const discoverRegion = portRegionToDiscoverRegion[port.region] ?? "Mainland";
+      return discoverRegion === region.name;
+    })
+    .map((port) => port.name);
+
+  return {
+    ...region,
+    ports: regionPorts,
+    portCount: regionPorts.length,
+  };
+});
 
 // Local Assets
 const imgHeroScenic =
@@ -177,6 +306,88 @@ const serviceCards = [
 const wrap =
   "w-full px-[24px] sm:px-[40px] lg:px-[60px] 2xl:px-[80px]";
 
+/* ── DiscoverScrollytelling — isolated component so state changes don't re-render the full page ── */
+function DiscoverScrollytelling() {
+  const [activeRegion, setActiveRegion] = useState<DiscoverRegionName | null>(null);
+  const regionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const resolvedRegion = activeRegion ?? regions[0].name;
+
+  const discoverPorts = PORTS.filter(
+    (port) =>
+      (portRegionToDiscoverRegion[port.region] ?? "Mainland") === resolvedRegion
+  );
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    regionRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveRegion(regions[i].name);
+          }
+        },
+        { threshold: 0.4 }
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  return (
+    <div className="grid grid-cols-[42%_58%]">
+      {/* Scrollable region cards on the left */}
+      <div className="relative z-10 px-[60px] 2xl:px-[80px]">
+        {regions.map((region, i) => (
+          <div
+            key={region.name}
+            ref={(el) => { regionRefs.current[i] = el; }}
+            className="min-h-[80vh] flex items-center py-16 lg:py-24"
+          >
+            <div
+              className={cn(
+                "border-l-4 pl-8 py-6 transition-all duration-500 max-w-md",
+                resolvedRegion === region.name
+                  ? "border-[#51d2c6] opacity-100"
+                  : "border-[#33305e]/10 opacity-40"
+              )}
+            >
+              <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#51d2c6]">
+                {region.name}
+              </span>
+              <h3 className="mt-3 font-[var(--font-syne)] text-[28px] font-bold leading-[1.2] sm:text-[32px]">
+                {region.headline}
+              </h3>
+              <p className="mt-4 text-[16px] leading-relaxed text-[#33305e]/70">
+                {region.description}
+              </p>
+              <p className="mt-5 text-[14px] text-[#33305e]/50">
+                {region.ports.join(" · ")}
+              </p>
+              <span className="mt-4 inline-block bg-[#51d2c6]/10 px-3 py-1 text-xs font-semibold text-[#51d2c6]">
+                {region.portCount} ports in this region
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Sticky map on the right */}
+      <div className="relative self-stretch">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <MapboxMap
+            activeRegion={activeRegion}
+            ports={discoverPorts}
+            showShip
+            className="h-full w-full"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [activePortFilter, setActivePortFilter] = useState<
     "All" | "Major" | "Hidden Gem"
@@ -188,7 +399,7 @@ export default function Home() {
   });
 
   return (
-    <div className="bg-white text-[#33305e] overflow-x-hidden selection:bg-[#96e0d9] selection:text-[#33305e]">
+    <div className="bg-white text-[#33305e] overflow-x-clip selection:bg-[#96e0d9] selection:text-[#33305e]">
       {/* Hero Section */}
       <section id="home" className="relative">
         <div
@@ -294,7 +505,13 @@ export default function Home() {
                 </div>
 
                 <div className="mt-[40px] relative overflow-hidden bg-[#96e0d9]/10 lg:mt-auto shadow-2xl shadow-[#33305e]/5">
-                  <MapboxMap className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,40vh,500px)] min-[1780px]:h-[500px]" />
+                  <MapboxMap animated className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,40vh,500px)] min-[1780px]:h-[500px]" />
+
+                  {/* Animated port counter */}
+                  <div className="absolute bottom-[24px] right-[24px] z-10 bg-[#33305e]/80 backdrop-blur-sm px-4 py-2 text-white text-sm font-semibold" style={{ animation: "counter-fade-in 0.5s ease-out 1s both" }}>
+                    <span className="font-[var(--font-syne)] text-[20px] text-[#96e0d9]"><AnimatedCounter target={50} suffix="+" duration={3000} /></span>
+                    <span className="ml-2 text-white/80">ports across Greece</span>
+                  </div>
 
                   <Link
                     href="#services"
@@ -336,60 +553,76 @@ export default function Home() {
 
       {/* Intro Text */}
       <section className={`${wrap} pb-16 pt-12 lg:pt-[60px]`}>
-        <div className="relative pl-6 lg:pl-0 border-l-4 border-[#51d2c6] lg:border-l-0">
-          <p className="max-w-[1400px] font-[var(--font-syne)] text-[28px] font-medium leading-[1.4] sm:text-[36px] lg:text-[42px] lg:leading-[1.3] text-[#33305e]">
-            Where every journey unfolds as a story of elegance and discovery.
-            Our bespoke programs serve the world&apos;s most distinguished
-            cruise lines across Greece&apos;s storied destinations.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="relative pl-6 lg:pl-0 border-l-4 border-[#51d2c6] lg:border-l-0">
+            <p className="max-w-[1400px] font-[var(--font-syne)] text-[28px] font-medium leading-[1.4] sm:text-[36px] lg:text-[42px] lg:leading-[1.3] text-[#33305e]">
+              Where every journey unfolds as a story of elegance and discovery.
+              Our bespoke programs serve the world&apos;s most distinguished
+              cruise lines across Greece&apos;s storied destinations.
+            </p>
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* Stats Section */}
       <section className="bg-[#33305e] py-[60px] text-white">
         <div className={`${wrap}`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 md:divide-x md:divide-white/20">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center justify-center p-4 text-center"
-              >
-                <div className="font-[var(--font-syne)] text-[48px] font-bold text-[#96e0d9] sm:text-[56px] lg:text-[64px] leading-none">
-                  {stat.value}
+            {stats.map((stat) => {
+              const num = parseInt(stat.value, 10);
+              const suffix = stat.value.replace(/\d+/, "");
+              return (
+                <div
+                  key={stat.label}
+                  className="flex flex-col items-center justify-center p-4 text-center"
+                >
+                  <div className="font-[var(--font-syne)] text-[48px] font-bold text-[#96e0d9] sm:text-[56px] lg:text-[64px] leading-none">
+                    <AnimatedCounter target={num} suffix={suffix} />
+                  </div>
+                  <div className="mt-4 text-[18px] uppercase tracking-widest text-white/80 sm:text-[20px]">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="mt-4 text-[18px] uppercase tracking-widest text-white/80 sm:text-[20px]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Partners Section */}
-      <section id="company" className={`${wrap} py-20 lg:py-28`}>
-        <div className="mb-12 flex flex-col items-center text-center">
-          <span className="mb-4 inline-block bg-[#51d2c6]/10 px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-[#51d2c6]">
-            Trusted Partners
-          </span>
-          <h2 className="font-[var(--font-syne)] text-[32px] font-bold leading-[1.2] sm:text-[40px] lg:text-[56px]">
-            Chosen by the World’s
-            <br />
-            Finest Cruise Lines
-          </h2>
+      <section id="company" className="py-20 lg:py-28">
+        <div className={`${wrap} mb-12 flex flex-col items-center text-center`}>
+          <ScrollReveal>
+            <span className="mb-4 inline-block bg-[#51d2c6]/10 px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-[#51d2c6]">
+              Trusted Partners
+            </span>
+            <h2 className="font-[var(--font-syne)] text-[32px] font-bold leading-[1.2] sm:text-[40px] lg:text-[56px]">
+              Chosen by the World&apos;s
+              <br />
+              Finest Cruise Lines
+            </h2>
+          </ScrollReveal>
         </div>
 
-        <div className="mt-8 border-y border-[#33305e]/10 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-12 gap-x-8 text-center">
-            {partnerLogos.map((logo, i) => (
-              <div
-                key={`${logo}-${i}`}
-                className="flex items-center justify-center"
+        <div className="mt-8 border-y border-[#33305e]/10 py-12 overflow-hidden">
+          <div className="flex animate-marquee whitespace-nowrap">
+            {[...partnerLogos, ...partnerLogos].map((logo, i) => (
+              <span
+                key={`row1-${i}`}
+                className="mx-8 inline-block font-[var(--font-syne)] text-[22px] font-bold text-[#33305e]/30 shrink-0"
               >
-                <span className="font-[var(--font-syne)] text-[24px] font-bold text-[#33305e]/40 transition-colors duration-300 hover:text-[#33305e] cursor-default">
-                  {logo}
-                </span>
-              </div>
+                {logo}
+              </span>
+            ))}
+          </div>
+          <div className="flex animate-marquee-reverse whitespace-nowrap mt-6">
+            {[...partnerLogos, ...partnerLogos].map((logo, i) => (
+              <span
+                key={`row2-${i}`}
+                className="mx-8 inline-block font-[var(--font-syne)] text-[22px] font-bold text-[#33305e]/30 shrink-0"
+              >
+                {logo}
+              </span>
             ))}
           </div>
         </div>
@@ -462,23 +695,25 @@ export default function Home() {
 
       {/* Manifesto */}
       <section className={`${wrap} py-24 text-center`}>
-        <div className="mx-auto max-w-4xl">
-          <Anchor className="mx-auto h-12 w-12 text-[#51d2c6] mb-8" />
-          <p className="font-[var(--font-syne)] text-[28px] leading-[1.6] sm:text-[36px] lg:text-[44px] text-[#33305e]">
-            &ldquo;Excellence is not an aspiration, it is a standard refined
-            over decades.&rdquo;
-          </p>
-          <p className="mt-8 text-[18px] leading-relaxed text-[#33305e]/70 lg:text-[22px]">
-            What sets us apart is our relentless attention to detail and our
-            commitment to creating seamless experiences at every port of call.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="mx-auto max-w-4xl">
+            <Anchor className="mx-auto h-12 w-12 text-[#51d2c6] mb-8" />
+            <p className="font-[var(--font-syne)] text-[28px] leading-[1.6] sm:text-[36px] lg:text-[44px] text-[#33305e]">
+              &ldquo;Excellence is not an aspiration, it is a standard refined
+              over decades.&rdquo;
+            </p>
+            <p className="mt-8 text-[18px] leading-relaxed text-[#33305e]/70 lg:text-[22px]">
+              What sets us apart is our relentless attention to detail and our
+              commitment to creating seamless experiences at every port of call.
+            </p>
+          </div>
+        </ScrollReveal>
       </section>
 
-      {/* Discover Greece (New Section) */}
-      <section className={`${wrap} py-24`}>
-        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
+      {/* Discover Greece — Scrollytelling */}
+      <section>
+        <div className={`${wrap} pt-24 pb-12`}>
+          <ScrollReveal>
             <h2 className="font-[var(--font-syne)] text-[36px] font-bold leading-[1.1] sm:text-[48px] lg:text-[64px]">
               Discover Greece
             </h2>
@@ -486,28 +721,39 @@ export default function Home() {
               From legendary ports to hidden harbors, we craft experiences
               across the entire Hellenic coast.
             </p>
-          </div>
-          
-          <div className="flex items-center gap-2 bg-[#f8f9fa] p-1.5 border border-[#33305e]/10">
-            {(["All", "Major", "Hidden Gem"] as const).map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActivePortFilter(filter)}
-                className={cn(
-                  "px-6 py-2.5 text-sm font-semibold transition-all duration-300",
-                  activePortFilter === filter
-                    ? "bg-[#33305e] text-white shadow-md"
-                    : "text-[#33305e]/70 hover:text-[#33305e] hover:bg-white"
-                )}
-              >
-                {filter === "All" ? "All Ports" : filter === "Major" ? "Major Ports" : "Hidden Gems"}
-              </button>
-            ))}
-          </div>
+          </ScrollReveal>
         </div>
 
-        <div className="relative h-[600px] w-full overflow-hidden border border-[#33305e]/10 shadow-2xl">
-          <MapboxMap ports={filteredPorts} className="h-full w-full" />
+        {/* Desktop scrollytelling */}
+        <div className="hidden lg:block">
+          <DiscoverScrollytelling />
+        </div>
+
+        {/* Mobile fallback: filter + map */}
+        <div className="lg:hidden">
+          <div className={`${wrap} pb-6`}>
+            <div className="flex items-center gap-2 bg-[#f8f9fa] p-1.5 border border-[#33305e]/10">
+              {(["All", "Major", "Hidden Gem"] as const).map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActivePortFilter(filter)}
+                  className={cn(
+                    "px-6 py-2.5 text-sm font-semibold transition-all duration-300",
+                    activePortFilter === filter
+                      ? "bg-[#33305e] text-white shadow-md"
+                      : "text-[#33305e]/70 hover:text-[#33305e] hover:bg-white"
+                  )}
+                >
+                  {filter === "All" ? "All Ports" : filter === "Major" ? "Major Ports" : "Hidden Gems"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={`${wrap} pb-24`}>
+            <div className="relative h-[500px] w-full overflow-hidden border border-[#33305e]/10 shadow-2xl">
+              <MapboxMap ports={filteredPorts} showShip className="h-full w-full" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -549,6 +795,7 @@ export default function Home() {
 
       {/* Destinations Preview */}
       <section id="destinations" className={`${wrap} py-24`}>
+        <ScrollReveal>
         <div className="grid gap-12 lg:grid-cols-[400px_1fr] lg:gap-20">
           <div className="flex flex-col justify-center">
             <div className="mb-8 flex h-[80px] w-[80px] items-center justify-center bg-[#f0fdfc]">
@@ -597,6 +844,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Footer / Contact */}
