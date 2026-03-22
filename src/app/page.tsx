@@ -29,6 +29,51 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
 import { cn } from "@/lib/utils";
+import { InfiniteCarousel } from "@/components/InfiniteCarousel";
+
+/* ── Carousel image sets ── */
+const heroCarouselImages = [
+  "/images/carousel/IMG_1570_converted.webp",
+  "/images/carousel/IMG_1654_converted.webp",
+  "/images/carousel/IMG_1845.JPEG",
+  "/images/carousel/IMG_1929.JPG",
+  "/images/carousel/IMG_3615_converted.webp",
+  "/images/carousel/IMG_3634.JPG",
+  "/images/carousel/IMG_3635.JPG",
+  "/images/carousel/IMG_3829.JPG",
+  "/images/carousel/IMG_3877.JPG",
+  "/images/carousel/IMG_5715_converted.webp",
+  "/images/carousel/parthenon-athens.webp",
+  "/images/carousel/temple-poseidon-sunset-sounion.webp",
+  "/images/carousel/theatre-epidaurus.webp",
+  "/images/carousel/delphi-archaeological-site.webp",
+];
+
+const heritageCarouselImages1 = [
+  "/images/carousel/IMG_1656_converted.webp",
+  "/images/carousel/IMG_7889_converted.webp",
+  "/images/carousel/IMG_3637.JPEG",
+  "/images/carousel/IMG_8794_converted.webp",
+  "/images/carousel/temple-apollo-corinth.webp",
+  "/images/carousel/acropolis-athens.webp",
+];
+
+const heritageCarouselImages2 = [
+  "/images/carousel/IMG_7890_converted.webp",
+  "/images/carousel/IMG_3622.JPG",
+  "/images/carousel/IMG_1706_converted.webp",
+  "/images/carousel/IMG_8811_converted.webp",
+  "/images/carousel/temple-poseidon-sounion.webp",
+  "/images/carousel/meteora-monasteries.webp",
+];
+
+const heritageCarouselImages3 = [
+  "/images/carousel/IMG_7893_converted.webp",
+  "/images/carousel/IMG_7894_converted.webp",
+  "/images/carousel/IMG_7903_converted.webp",
+  "/images/carousel/temple-aphaia-aegina.webp",
+  "/images/carousel/theatre-epidaurus-ancient.webp",
+];
 
 /* ── ScrollReveal wrapper ── */
 function ScrollReveal({ children, className }: { children: ReactNode; className?: string }) {
@@ -160,12 +205,7 @@ const regions = discoverRegionContent.map((region) => {
 });
 
 // Local Assets
-const imgHeroScenic =
-  "/images/ew0KICAgICAgICAgICJidWNrZXQiOiAiaHR0cHM6Ly9hZW0tcHJvZC1wdWJsaXNoLnZpa2luZy5jb20iLA0KICAgICAgICAgICJrZXkiOiAiY29udGVudC9kYW0vdmlraW5nY3J1aXNlcy9lbi9tYWdub2xpYS1pbWFnZXMvbWFyX2NvbnRlbnQvc3RhdGljLWltYWdlcy9DQ19TVEFSX.webp";
 const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
-const imgRectangle4136 = "/images/figma/scenic-bay.png";
-const imgRectangle4137 = "/images/figma/harbor-view.png";
-const imgRectangle4138 = "/images/figma/aerial-coastline.png";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -198,6 +238,11 @@ const partnerLogos = [
   "Virgin Voyages",
 ];
 
+const partnerRows = [
+  partnerLogos.slice(0, Math.ceil(partnerLogos.length / 2)),
+  partnerLogos.slice(Math.ceil(partnerLogos.length / 2)),
+];
+
 const stats = [
   { value: "50+", label: "Greek Ports" },
   { value: "30+", label: "Years Experience" },
@@ -207,8 +252,6 @@ const stats = [
 const companyLinks = [
   { label: "About Us", href: "/company" },
   { label: "Our Team", href: "/company" },
-  { label: "Certifications", href: "/company" },
-  { label: "Sustainability", href: "/company" },
 ];
 
 const serviceLinks = [
@@ -264,7 +307,7 @@ const serviceCards = [
     description:
       "Exclusive access and personalized attention for the most discerning guests.",
     image:
-      "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&q=80",
+      "https://images.unsplash.com/photo-1759155887842-3702b877de0e?w=800&q=80",
   },
   {
     title: "Turnaround Services",
@@ -278,7 +321,7 @@ const serviceCards = [
     description:
       "Scholars and specialists who bring Greece's rich heritage to life.",
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+      "https://images.unsplash.com/photo-1681046192294-217612ee58a1?w=800&q=80",
   },
   {
     title: "Sustainable Tourism",
@@ -514,7 +557,7 @@ export default function Home() {
                   </div>
 
                   <Link
-                    href="#services"
+                    href="/services"
                     className="group absolute bottom-[24px] left-[24px] z-10"
                   >
                     <button className="flex h-[56px] items-center gap-4 bg-white pl-6 pr-4 text-[18px] font-bold text-[#33305e] shadow-[0_10px_30px_rgba(51,48,94,0.15)] transition-all hover:-translate-y-1 hover:shadow-xl">
@@ -527,14 +570,14 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right Column: Hero Image */}
-              <div className="relative mt-8 overflow-hidden bg-[#96e0d9] lg:mt-0 lg:h-full shadow-2xl shadow-[#33305e]/10 group">
-                <img
-                  src={imgHeroScenic}
-                  alt="Aegean waters"
-                  className="absolute inset-0 h-full w-full object-cover opacity-90 transition-transform duration-[8000ms] ease-linear group-hover:scale-110"
+              {/* Right Column: Hero Carousel */}
+              <div className="relative mt-8 overflow-hidden bg-[#96e0d9] lg:mt-0 lg:h-full shadow-2xl shadow-[#33305e]/10">
+                <InfiniteCarousel
+                  images={heroCarouselImages}
+                  interval={4000}
+                  overlay
+                  className="absolute inset-0 h-full w-full"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#33305e]/40 to-transparent" />
 
                 <Link
                   href="#contact"
@@ -604,25 +647,22 @@ export default function Home() {
           </ScrollReveal>
         </div>
 
-        <div className="mt-8 border-y border-[#33305e]/10 py-12 overflow-hidden">
-          <div className="flex animate-marquee whitespace-nowrap">
-            {[...partnerLogos, ...partnerLogos].map((logo, i) => (
-              <span
-                key={`row1-${i}`}
-                className="mx-8 inline-block font-[var(--font-syne)] text-[22px] font-bold text-[#33305e]/30 shrink-0"
+        <div className="mt-8 border-y border-[#33305e]/10 py-12">
+          <div className="mx-auto flex max-w-[1500px] flex-col gap-6">
+            {partnerRows.map((row, rowIndex) => (
+              <div
+                key={`partner-row-${rowIndex}`}
+                className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3"
               >
-                {logo}
-              </span>
-            ))}
-          </div>
-          <div className="flex animate-marquee-reverse whitespace-nowrap mt-6">
-            {[...partnerLogos, ...partnerLogos].map((logo, i) => (
-              <span
-                key={`row2-${i}`}
-                className="mx-8 inline-block font-[var(--font-syne)] text-[22px] font-bold text-[#33305e]/30 shrink-0"
-              >
-                {logo}
-              </span>
+                {row.map((logo) => (
+                  <span
+                    key={`${rowIndex}-${logo}`}
+                    className="font-[var(--font-syne)] text-[20px] font-bold text-[#33305e]/35 lg:text-[22px]"
+                  >
+                    {logo}
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -647,7 +687,7 @@ export default function Home() {
             {serviceCards.map((service, idx) => (
               <Link
                 key={service.title}
-                href="#services"
+                href="/services"
                 className="group relative bg-white overflow-hidden"
                 style={{ animationDelay: `${idx * 100}ms` }}
               >
@@ -821,25 +861,25 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="group relative overflow-hidden h-[300px] lg:h-[450px]">
-              <img
-                src={imgRectangle4136}
-                alt="Scenic bay"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            <div className="relative overflow-hidden h-[300px] lg:h-[450px]">
+              <InfiniteCarousel
+                images={heritageCarouselImages1}
+                interval={5000}
+                className="h-full w-full"
               />
             </div>
-            <div className="group relative overflow-hidden h-[300px] lg:h-[450px] mt-8 sm:mt-12">
-              <img
-                src={imgRectangle4138}
-                alt="Aerial coastline"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            <div className="relative overflow-hidden h-[300px] lg:h-[450px] mt-8 sm:mt-12">
+              <InfiniteCarousel
+                images={heritageCarouselImages2}
+                interval={6000}
+                className="h-full w-full"
               />
             </div>
-            <div className="group relative overflow-hidden h-[300px] lg:h-[450px]">
-              <img
-                src={imgRectangle4137}
-                alt="Harbor view"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            <div className="relative overflow-hidden h-[300px] lg:h-[450px]">
+              <InfiniteCarousel
+                images={heritageCarouselImages3}
+                interval={4500}
+                className="h-full w-full"
               />
             </div>
           </div>
@@ -860,6 +900,12 @@ export default function Home() {
             <h2 className="font-[var(--font-syne)] text-[36px] font-bold sm:text-[48px]">
               Travelife Certified Partner
             </h2>
+            <p className="mt-6 text-[16px] text-white/60 max-w-2xl mx-auto">
+              For questions and remarks related to our sustainability and CSR policies, please contact us at{" "}
+              <a href="mailto:operations@excursionsgreece.com" className="text-[#96e0d9] hover:underline">
+                operations@excursionsgreece.com
+              </a>
+            </p>
           </div>
 
           <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-24">
@@ -868,7 +914,7 @@ export default function Home() {
               <img
                 src={imgExcursionsGreeceLogoWhite1}
                 alt="Excursions Greece"
-                className="h-[80px] w-auto brightness-0 invert"
+                className="h-[80px] w-auto "
               />
               <p className="max-w-md text-[18px] text-white/70">
                 Leading the way in luxury shore excursions and destination

@@ -1666,6 +1666,8 @@ export function MapboxMap({
         portsByName: Map<string, Port>;
         directedLegs: DirectedShipLeg[];
         legsByFrom: Map<string, DirectedShipLeg[]>;
+        componentByPort: Map<string, number>;
+        components: string[][];
       };
 
       const buildShipNetwork = (): ShipNetwork => {
@@ -1703,7 +1705,50 @@ export function MapboxMap({
           legsByFrom.set(leg.from.name, existing);
         });
 
-        return { portsByName, directedLegs, legsByFrom };
+        const adjacencyByPort = new Map<string, Set<string>>();
+        directedLegs.forEach((leg) => {
+          const fromAdjacency = adjacencyByPort.get(leg.from.name) ?? new Set<string>();
+          fromAdjacency.add(leg.to.name);
+          adjacencyByPort.set(leg.from.name, fromAdjacency);
+
+          const toAdjacency = adjacencyByPort.get(leg.to.name) ?? new Set<string>();
+          toAdjacency.add(leg.from.name);
+          adjacencyByPort.set(leg.to.name, toAdjacency);
+        });
+
+        const componentByPort = new Map<string, number>();
+        const components: string[][] = [];
+        const pending = new Set(adjacencyByPort.keys());
+
+        while (pending.size > 0) {
+          const seedPortName = pending.values().next().value;
+          if (!seedPortName) break;
+
+          const stack = [seedPortName];
+          const componentPorts: string[] = [];
+          pending.delete(seedPortName);
+
+          while (stack.length > 0) {
+            const portName = stack.pop();
+            if (!portName) continue;
+            componentPorts.push(portName);
+
+            const neighbors = adjacencyByPort.get(portName) ?? new Set<string>();
+            neighbors.forEach((neighborName) => {
+              if (!pending.has(neighborName)) return;
+              pending.delete(neighborName);
+              stack.push(neighborName);
+            });
+          }
+
+          const componentId = components.length;
+          components.push(componentPorts);
+          componentPorts.forEach((portName) => {
+            componentByPort.set(portName, componentId);
+          });
+        }
+
+        return { portsByName, directedLegs, legsByFrom, componentByPort, components };
       };
 
       let shipNetwork = buildShipNetwork();
@@ -1711,6 +1756,54 @@ export function MapboxMap({
         map.getContainer().clientWidth > 0 && map.getContainer().clientHeight > 0;
 
       if (showShipRef.current && hasRenderableSize && shipNetwork.directedLegs.length > 0) {
+        const chooseRandom = <T,>(items: T[]) =>
+          items[Math.floor(Math.random() * items.length)] ?? null;
+
+        const pickRandomNavigablePort = (
+          network: ShipNetwork,
+          componentId?: number | null
+        ): Port | null => {
+          const componentPorts =
+            componentId === null || componentId === undefined
+              ? [...network.portsByName.keys()]
+              : network.components[componentId] ?? [];
+          const navigablePorts = componentPorts.filter(
+            (portName) => (network.legsByFrom.get(portName)?.length ?? 0) > 0
+          );
+          const selectedPortName = chooseRandom(navigablePorts) ?? chooseRandom(componentPorts);
+          if (!selectedPortName) return null;
+          return network.portsByName.get(selectedPortName) ?? null;
+        };
+
+        const chooseSpawnPort = (
+          network: ShipNetwork,
+          preferredPortName: string | null = null
+        ): Port => {
+          if (preferredPortName) {
+            const preferredPort = network.portsByName.get(preferredPortName);
+            if (preferredPort && (network.legsByFrom.get(preferredPort.name)?.length ?? 0) > 0) {
+              return preferredPort;
+            }
+          }
+
+          const navigableComponentIds = network.components
+            .map((_, index) => index)
+            .filter((componentId) =>
+              (network.components[componentId] ?? []).some(
+                (portName) => (network.legsByFrom.get(portName)?.length ?? 0) > 0
+              )
+            );
+          const randomComponentId = chooseRandom(navigableComponentIds);
+
+          return (
+            pickRandomNavigablePort(network, randomComponentId) ??
+            pickRandomNavigablePort(network) ??
+            network.directedLegs[0].from
+          );
+        };
+
+        const initialPort = chooseSpawnPort(shipNetwork);
+
         // Ship marker element
         const shipEl = document.createElement("div");
         shipEl.textContent = "\u26F4\uFE0F";
@@ -1730,12 +1823,7 @@ export function MapboxMap({
           anchor: "center",
           offset: [0, -10],
         })
-          .setLngLat(
-            (
-              shipNetwork.portsByName.get("Piraeus") ??
-              shipNetwork.directedLegs[0].from
-            ).coordinates
-          )
+          .setLngLat(initialPort.coordinates)
           .addTo(map);
 
         // Auto popup for ship
@@ -1752,30 +1840,45 @@ export function MapboxMap({
         const startDelay = isAnimated ? 5000 : 1000;
         let tourStartTime: number | null = null;
         const TARGET_SAIL_DURATION = 5;
+        const MAX_LEGS_PER_COMPONENT = 10;
+        const MIN_COMPONENT_LEGS_BEFORE_SWITCH = 4;
+        const RECENT_PORT_WINDOW = 8;
+        const RECENT_PORT_LOOP_SIZE = 4;
         const SHIP_EMOJI = "\u26F4\uFE0F";
         let activeRouteRevision = routesRevisionRef.current;
-
-        const chooseRandom = <T,>(items: T[]) =>
-          items[Math.floor(Math.random() * items.length)] ?? null;
 
         const pickNextLeg = (
           network: ShipNetwork,
           fromName: string,
-          avoidToName: string | null
+          avoidToName: string | null,
+          visitedPorts: Set<string>,
+          recentPorts: string[]
         ) => {
           const candidates = network.legsByFrom.get(fromName) ?? [];
           if (candidates.length === 0) {
             return chooseRandom(network.directedLegs);
           }
 
+          let pool = candidates;
           if (avoidToName && candidates.length > 1) {
             const nonBacktracking = candidates.filter((leg) => leg.to.name !== avoidToName);
             if (nonBacktracking.length > 0) {
-              return chooseRandom(nonBacktracking);
+              pool = nonBacktracking;
             }
           }
 
-          return chooseRandom(candidates);
+          const unexplored = pool.filter((leg) => !visitedPorts.has(leg.to.name));
+          if (unexplored.length > 0) {
+            return chooseRandom(unexplored);
+          }
+
+          const recentPortSet = new Set(recentPorts.slice(-RECENT_PORT_LOOP_SIZE));
+          const nonRecent = pool.filter((leg) => !recentPortSet.has(leg.to.name));
+          if (nonRecent.length > 0) {
+            return chooseRandom(nonRecent);
+          }
+
+          return chooseRandom(pool);
         };
 
         const getLegDuration = (length: number, network: ShipNetwork) => {
@@ -1790,13 +1893,41 @@ export function MapboxMap({
           return Math.max(2.5, Math.min(9.5, duration));
         };
 
-        let currentPortName =
-          (shipNetwork.portsByName.get("Piraeus") ?? shipNetwork.directedLegs[0].from).name;
+        let currentPortName = initialPort.name;
+        let currentComponentId = shipNetwork.componentByPort.get(currentPortName) ?? null;
+        let legsInCurrentComponent = 0;
+        let visitedPortsInComponent = new Set<string>([currentPortName]);
+        let recentPortHistory = [currentPortName];
         let previousPortName: string | null = null;
         let currentLeg:
           | { leg: DirectedShipLeg; startedAt: number; duration: number }
           | null = null;
         let dwellUntil: number | null = null;
+
+        const rememberVisitedPort = (portName: string) => {
+          recentPortHistory.push(portName);
+          if (recentPortHistory.length > RECENT_PORT_WINDOW) {
+            recentPortHistory = recentPortHistory.slice(-RECENT_PORT_WINDOW);
+          }
+        };
+
+        const hasRepeatingRecentLoop = () => {
+          if (recentPortHistory.length < RECENT_PORT_LOOP_SIZE * 2) return false;
+          const previousPattern = recentPortHistory.slice(
+            -RECENT_PORT_LOOP_SIZE * 2,
+            -RECENT_PORT_LOOP_SIZE
+          );
+          const recentPattern = recentPortHistory.slice(-RECENT_PORT_LOOP_SIZE);
+
+          return recentPattern.every(
+            (portName, index) => portName === previousPattern[index]
+          );
+        };
+
+        const hasLowVarietyRecentLoop = () => {
+          const recentWindow = recentPortHistory.slice(-6);
+          return recentWindow.length >= 6 && new Set(recentWindow).size <= 2;
+        };
 
         const resetShipToNetwork = (preferredPortName: string | null): boolean => {
           shipNetwork = buildShipNetwork();
@@ -1804,20 +1935,72 @@ export function MapboxMap({
             return false;
           }
 
-          const fallbackPort =
-            (preferredPortName
-              ? shipNetwork.portsByName.get(preferredPortName)
-              : undefined) ??
-            shipNetwork.portsByName.get("Piraeus") ??
-            shipNetwork.directedLegs[0].from;
+          const fallbackPort = chooseSpawnPort(shipNetwork, preferredPortName);
 
           currentPortName = fallbackPort.name;
+          currentComponentId = shipNetwork.componentByPort.get(fallbackPort.name) ?? null;
+          legsInCurrentComponent = 0;
+          visitedPortsInComponent = new Set<string>([fallbackPort.name]);
+          recentPortHistory = [fallbackPort.name];
           previousPortName = null;
           currentLeg = null;
           dwellUntil = null;
           shipEl.textContent = SHIP_EMOJI;
           shipPopup.remove();
           shipMarker.setLngLat(fallbackPort.coordinates);
+          return true;
+        };
+
+        const shouldRotateToAnotherComponent = (network: ShipNetwork) => {
+          if (network.components.length <= 1) return false;
+
+          const loopDetected = hasRepeatingRecentLoop() || hasLowVarietyRecentLoop();
+          if (loopDetected && legsInCurrentComponent >= 3) {
+            return true;
+          }
+
+          if (currentComponentId === null) return false;
+          if (legsInCurrentComponent < MIN_COMPONENT_LEGS_BEFORE_SWITCH) return false;
+
+          const currentComponentPorts = network.components[currentComponentId] ?? [];
+          const exploredWholeComponent =
+            currentComponentPorts.length > 0 &&
+            currentComponentPorts.every((portName) => visitedPortsInComponent.has(portName));
+
+          return exploredWholeComponent || legsInCurrentComponent >= MAX_LEGS_PER_COMPONENT;
+        };
+
+        const rotateToAnotherComponent = (network: ShipNetwork): boolean => {
+          if (network.components.length <= 1) return false;
+
+          const componentIds = network.components
+            .map((_, index) => index)
+            .filter((componentId) => componentId !== currentComponentId);
+
+          const targetComponentId = chooseRandom(componentIds);
+          if (targetComponentId === null) return false;
+
+          const targetPorts = network.components[targetComponentId] ?? [];
+          const navigableTargetPorts = targetPorts.filter(
+            (portName) => (network.legsByFrom.get(portName)?.length ?? 0) > 0
+          );
+          const targetPortName = chooseRandom(navigableTargetPorts) ?? chooseRandom(targetPorts);
+          if (!targetPortName) return false;
+
+          const targetPort = network.portsByName.get(targetPortName);
+          if (!targetPort) return false;
+
+          currentPortName = targetPort.name;
+          currentComponentId = targetComponentId;
+          legsInCurrentComponent = 0;
+          visitedPortsInComponent = new Set<string>([targetPort.name]);
+          recentPortHistory = [targetPort.name];
+          previousPortName = null;
+          currentLeg = null;
+          dwellUntil = null;
+          shipEl.textContent = SHIP_EMOJI;
+          shipPopup.remove();
+          shipMarker.setLngLat(targetPort.coordinates);
           return true;
         };
 
@@ -1854,7 +2037,17 @@ export function MapboxMap({
               if (!resetShipToNetwork(currentPortName)) return;
             }
 
-            const nextLeg = pickNextLeg(shipNetwork, currentPortName, previousPortName);
+            if (shouldRotateToAnotherComponent(shipNetwork)) {
+              rotateToAnotherComponent(shipNetwork);
+            }
+
+            const nextLeg = pickNextLeg(
+              shipNetwork,
+              currentPortName,
+              previousPortName,
+              visitedPortsInComponent,
+              recentPortHistory
+            );
             if (!nextLeg) return;
             previousPortName = currentPortName;
             currentLeg = {
@@ -1871,6 +2064,16 @@ export function MapboxMap({
           if (progress >= 1) {
             const arrivalPort = currentLeg.leg.to;
             currentPortName = arrivalPort.name;
+            const arrivalComponentId = shipNetwork.componentByPort.get(arrivalPort.name) ?? null;
+            if (arrivalComponentId !== currentComponentId) {
+              currentComponentId = arrivalComponentId;
+              legsInCurrentComponent = 0;
+              visitedPortsInComponent = new Set<string>();
+              recentPortHistory = [];
+            }
+            visitedPortsInComponent.add(arrivalPort.name);
+            rememberVisitedPort(arrivalPort.name);
+            legsInCurrentComponent += 1;
             currentLeg = null;
             dwellUntil = timestamp + DWELL_TIME * 1000;
 

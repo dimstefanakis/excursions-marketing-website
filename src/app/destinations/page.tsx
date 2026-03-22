@@ -178,11 +178,11 @@ export default function DestinationsPage() {
                     {ports.length} {ports.length === 1 ? "port" : "ports"}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#33305e]/10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {ports.map((port) => (
                     <div
                       key={port.name}
-                      className="bg-white p-8 group transition-all duration-500 hover:bg-[#33305e] hover:text-white"
+                      className="bg-white p-8 ring-[0.5px] ring-inset ring-[#33305e]/10 group transition-all duration-500 hover:bg-[#33305e] hover:text-white"
                     >
                       <MapPin className="w-5 h-5 text-[#51d2c6] mb-6 transition-colors duration-500 group-hover:text-[#96e0d9]" />
                       <h4 className="font-[var(--font-syne)] font-bold text-[20px] mb-2">
@@ -238,7 +238,7 @@ export default function DestinationsPage() {
               <img
                 src="/images/figma/logo.png"
                 alt="Excursions Greece"
-                className="h-[80px] w-auto brightness-0 invert"
+                className="h-[80px] w-auto "
               />
               <p className="max-w-md text-[18px] text-white/70 leading-relaxed">
                 Leading the way in luxury shore excursions and destination
@@ -283,8 +283,6 @@ export default function DestinationsPage() {
               <ul className="space-y-5">
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">About Us</Link></li>
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Our Team</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Certifications</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Sustainability</Link></li>
               </ul>
             </div>
 

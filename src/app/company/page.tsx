@@ -30,6 +30,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { InfiniteCarousel } from "@/components/InfiniteCarousel";
+
+const companyCarouselImages = [
+  "/images/carousel/IMG_1570_2_converted.webp",
+  "/images/carousel/IMG_1706_converted.webp",
+  "/images/carousel/IMG_3622.JPG",
+  "/images/carousel/IMG_7889_converted.webp",
+  "/images/carousel/IMG_7890_converted.webp",
+  "/images/carousel/IMG_7893_converted.webp",
+  "/images/carousel/IMG_7894_converted.webp",
+  "/images/carousel/IMG_7903_converted.webp",
+  "/images/carousel/IMG_8111.JPG",
+  "/images/carousel/IMG_8794_converted.webp",
+  "/images/carousel/IMG_8811_converted.webp",
+  "/images/carousel/acropolis-sunset-athens.webp",
+  "/images/carousel/ruins-attica-athens.webp",
+  "/images/carousel/meteora-greece.webp",
+  "/images/carousel/ancient-olympia.webp",
+  "/images/carousel/temple-poseidon-sounion-view.webp",
+];
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -166,14 +186,14 @@ export default function CompanyPage() {
             <div className="relative h-[400px] lg:h-[500px] w-full hidden lg:block motion-safe:animate-in motion-safe:fade-in motion-safe:duration-1000 delay-300">
               <div className="absolute inset-0 bg-[#51d2c6] transform translate-x-4 translate-y-4 rounded-sm"></div>
               <div className="relative h-full w-full overflow-hidden rounded-sm shadow-2xl">
-                <img
-                  src="/images/figma/hero-slideshow.png"
-                  alt="Luxury Destination Management"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                <InfiniteCarousel
+                  images={companyCarouselImages}
+                  interval={4500}
+                  className="h-full w-full"
                 />
-                <div className="absolute inset-0 bg-[#33305e]/10"></div>
+                <div className="absolute inset-0 bg-[#33305e]/10 pointer-events-none"></div>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-white p-6 shadow-xl border border-[#33305e]/5 max-w-[200px]">
+              <div className="absolute -bottom-6 -left-6 bg-white p-6 shadow-xl border border-[#33305e]/5 max-w-[200px] z-10">
                 <div className="h-1 w-12 bg-[#51d2c6] mb-3"></div>
                 <p className="text-[#33305e]/60 font-[var(--font-sulphur)] uppercase tracking-widest text-xs font-bold leading-relaxed">
                   Luxury Destination Management
@@ -343,7 +363,7 @@ export default function CompanyPage() {
               <img
                 src="/images/figma/logo.png"
                 alt="Excursions Greece"
-                className="h-[80px] w-auto brightness-0 invert"
+                className="h-[80px] w-auto "
               />
               <p className="max-w-md text-[18px] text-white/70 leading-relaxed">
                 Leading the way in luxury shore excursions and destination
@@ -388,8 +408,6 @@ export default function CompanyPage() {
               <ul className="space-y-5">
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">About Us</Link></li>
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Our Team</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Certifications</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Sustainability</Link></li>
               </ul>
             </div>
 

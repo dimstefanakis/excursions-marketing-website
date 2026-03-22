@@ -379,7 +379,7 @@ export default function ContactPage() {
               <img
                 src="/images/figma/logo.png"
                 alt="Excursions Greece"
-                className="h-[80px] w-auto brightness-0 invert"
+                className="h-[80px] w-auto"
               />
               <p className="max-w-md text-[18px] text-white/70 leading-relaxed">
                 Leading the way in luxury shore excursions and destination
@@ -424,8 +424,6 @@ export default function ContactPage() {
               <ul className="space-y-5">
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">About Us</Link></li>
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Our Team</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Certifications</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Sustainability</Link></li>
               </ul>
             </div>
 

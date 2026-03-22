@@ -50,42 +50,49 @@ const services = [
     title: 'Shore Excursions',
     description: 'Curated experiences showcasing Greece\'s history, culture, and natural beauty for cruise passengers.',
     features: ['Private & group tours', 'Expert local guides', 'All major ports and hidden harbors'],
+    image: 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=800&q=80',
   },
   {
     icon: Crown,
     title: 'VIP & Concierge',
     description: 'Luxury services for discerning travelers seeking exclusive access and personalized attention.',
     features: ['Private transfers', 'Exclusive venues', 'Personal concierge'],
+    image: 'https://images.unsplash.com/photo-1759155887842-3702b877de0e?w=800&q=80',
   },
   {
     icon: Users,
     title: 'Turnaround Services',
     description: 'Comprehensive embarkation and disembarkation support in all Greek cruise ports.',
     features: ['Meet & greet', 'Luggage handling', 'Port transfers', 'Check-in services'],
+    image: '/images/DJI_20260128_113510_086.jpg',
   },
   {
     icon: BookOpen,
     title: 'Cultural Experts',
     description: 'Professional guides and cultural specialists bringing Greece\'s rich heritage to life.',
     features: ['Licensed guides', 'Multi-language', 'In-Depth Knowledge'],
+    image: 'https://images.unsplash.com/photo-1681046192294-217612ee58a1?w=800&q=80',
   },
   {
     icon: Leaf,
     title: 'Sustainable Tourism',
     description: 'Responsible travel programs supporting local communities and environmental conservation.',
     features: ['Eco-friendly tours', 'Local partnerships', 'Cultural preservation'],
+    image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80',
   },
   {
     icon: MapIcon,
     title: 'Land Programs',
     description: 'Immersive mainland experiences and extended journeys beyond the ports.',
     features: ['Overland Journeys', 'Pre- and Post-Cruise Extensions', 'Hotels & Venues', 'Island Exploration'],
+    image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80',
   },
   {
     icon: Anchor,
     title: 'Boat & Yacht Charters',
     description: 'Premium private charters, day sails, and island-to-island experiences aboard luxury vessels.',
     features: ['Private yacht charters', 'Day sailing excursions', 'Island-hopping journeys'],
+    image: 'https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=800&q=80',
   }
 ];
 
@@ -184,38 +191,52 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="pb-24 lg:pb-32 bg-white">
         <div className={wrap}>
-          <div className="grid md:grid-cols-2 gap-px bg-[#33305e]/10 border border-[#33305e]/10 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 border border-[#33305e]/10 max-w-7xl mx-auto">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
-                <div 
-                  key={index} 
-                  className="group p-12 lg:p-16 bg-white hover:bg-[#33305e] transition-all duration-500 flex flex-col motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700"
+                <div
+                  key={index}
+                  className="group bg-white hover:bg-[#33305e] transition-all duration-500 flex flex-col overflow-hidden ring-[0.5px] ring-inset ring-[#33305e]/10 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="h-20 flex items-center mb-10">
-                    <Icon className="w-14 h-14 text-[#51d2c6] transition-colors duration-500 group-hover:text-[#96e0d9]" />
+                  <div className="h-48 overflow-hidden relative">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-[#33305e]/10 group-hover:bg-[#33305e]/30 transition-colors duration-500" />
                   </div>
-                  
-                  <h3 className="font-[var(--font-syne)] text-[28px] lg:text-[32px] font-bold text-[#33305e] group-hover:text-white tracking-tight mb-6 leading-tight transition-colors">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-[18px] text-[#33305e]/70 group-hover:text-white/70 leading-relaxed font-light mb-10 transition-colors">
-                    {service.description}
-                  </p>
-                  
-                  <div className="space-y-3 mt-auto pt-6 border-t border-[#33305e]/10 group-hover:border-white/10 transition-colors">
-                    {service.features.map((feature, fIndex) => (
-                      <div key={fIndex} className="text-[14px] text-[#33305e]/50 group-hover:text-white/40 font-medium uppercase tracking-[0.15em] transition-colors flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 bg-[#51d2c6] rounded-full"></div>
-                        {feature}
-                      </div>
-                    ))}
+                  <div className="p-12 lg:p-16 flex flex-col flex-1">
+                    <div className="h-20 flex items-center mb-10">
+                      <Icon className="w-14 h-14 text-[#51d2c6] transition-colors duration-500 group-hover:text-[#96e0d9]" />
+                    </div>
+
+                    <h3 className="font-[var(--font-syne)] text-[28px] lg:text-[32px] font-bold text-[#33305e] group-hover:text-white tracking-tight mb-6 leading-tight transition-colors">
+                      {service.title}
+                    </h3>
+
+                    <p className="text-[18px] text-[#33305e]/70 group-hover:text-white/70 leading-relaxed font-light mb-10 transition-colors">
+                      {service.description}
+                    </p>
+
+                    <div className="space-y-3 mt-auto pt-6 border-t border-[#33305e]/10 group-hover:border-white/10 transition-colors">
+                      {service.features.map((feature, fIndex) => (
+                        <div key={fIndex} className="text-[14px] text-[#33305e]/50 group-hover:text-white/40 font-medium uppercase tracking-[0.15em] transition-colors flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 bg-[#51d2c6] rounded-full"></div>
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               );
             })}
+            {/* White filler cell to complete the grid */}
+            {services.length % 2 !== 0 && (
+              <div className="bg-white ring-[0.5px] ring-inset ring-[#33305e]/10" />
+            )}
           </div>
         </div>
       </section>
@@ -297,7 +318,7 @@ export default function ServicesPage() {
               <img
                 src="/images/figma/logo.png"
                 alt="Excursions Greece"
-                className="h-[80px] w-auto brightness-0 invert"
+                className="h-[80px] w-auto "
               />
               <p className="max-w-md text-[18px] text-white/70 leading-relaxed">
                 Leading the way in luxury shore excursions and destination
@@ -342,8 +363,6 @@ export default function ServicesPage() {
               <ul className="space-y-5">
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">About Us</Link></li>
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Our Team</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Certifications</Link></li>
-                <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Sustainability</Link></li>
               </ul>
             </div>
 
