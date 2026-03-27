@@ -101,9 +101,9 @@ export default function CompanyPage() {
       <header className={cn(wrap, "flex items-center justify-between py-6 lg:py-8")}>
         <Link href="/" className="block">
           <img
-            src="/images/figma/logo.png"
+            src="/images/figma/logo-landscape.svg"
             alt="Excursions Greece"
-            className="h-[60px] w-auto sm:h-[80px] lg:h-[120px] object-contain"
+            className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
           />
         </Link>
 
@@ -361,9 +361,9 @@ export default function CompanyPage() {
             {/* Contact Info */}
             <div className="space-y-10">
               <img
-                src="/images/figma/logo.png"
+                src="/images/figma/logo-landscape-footer.svg"
                 alt="Excursions Greece"
-                className="h-[80px] w-auto "
+                className="h-[72px] w-auto max-w-[250px] object-contain sm:h-[80px] sm:max-w-[290px]"
               />
               <p className="max-w-md text-[18px] text-white/70 leading-relaxed">
                 Leading the way in luxury shore excursions and destination
@@ -394,7 +394,7 @@ export default function CompanyPage() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span className="leading-snug">
-                    Ακτή Μιαούλη 81, Πειραιάς 185 38
+                    Akti Miaouli 81 Pireas 185 38
                   </span>
                 </div>
               </div>
@@ -428,9 +428,27 @@ export default function CompanyPage() {
             <span>© 2026 Excursions Greece. All rights reserved.</span>
 
             <div className="flex gap-6">
-              <a href="#" className="hover:text-[#96e0d9] transition-colors"><Facebook className="h-5 w-5" /></a>
-              <a href="#" className="hover:text-[#96e0d9] transition-colors"><Instagram className="h-5 w-5" /></a>
-              <a href="#" className="hover:text-[#96e0d9] transition-colors"><Linkedin className="h-5 w-5" /></a>
+              <a
+                href="https://www.facebook.com/share/1L4Kakk8Ds/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on Facebook"
+                className="hover:text-[#96e0d9] transition-colors"
+              ><Facebook className="h-5 w-5" /></a>
+              <a
+                href="https://www.instagram.com/excursiongreece/?hl=en"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on Instagram"
+                className="hover:text-[#96e0d9] transition-colors"
+              ><Instagram className="h-5 w-5" /></a>
+              <a
+                href="https://www.linkedin.com/company/excursions-greece/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on LinkedIn"
+                className="hover:text-[#96e0d9] transition-colors"
+              ><Linkedin className="h-5 w-5" /></a>
             </div>
 
             <div className="flex gap-8">

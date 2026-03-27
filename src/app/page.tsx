@@ -205,7 +205,8 @@ const regions = discoverRegionContent.map((region) => {
 });
 
 // Local Assets
-const imgExcursionsGreeceLogoWhite1 = "/images/figma/logo.png";
+const headerLogoSrc = "/images/figma/logo-landscape.svg";
+const footerLogoSrc = "/images/figma/logo-landscape-footer.svg";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -452,9 +453,9 @@ export default function Home() {
           <header className="flex items-center justify-between">
             <Link href="/" className="block">
               <img
-                src={imgExcursionsGreeceLogoWhite1}
+                src={headerLogoSrc}
                 alt="Excursions Greece"
-                className="h-[60px] w-auto sm:h-[80px] lg:h-[120px] object-contain"
+                className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
               />
             </Link>
 
@@ -580,7 +581,7 @@ export default function Home() {
                 />
 
                 <Link
-                  href="#contact"
+                  href="/contact"
                   className="absolute bottom-[24px] left-[24px] z-10"
                 >
                   <Button className="h-[64px] gap-6 bg-white px-8 text-[20px] font-bold text-[#33305e] shadow-lg transition-all hover:-translate-y-1 hover:bg-white hover:text-[#51d2c6]">
@@ -912,9 +913,9 @@ export default function Home() {
             {/* Contact Info */}
             <div className="space-y-8">
               <img
-                src={imgExcursionsGreeceLogoWhite1}
+                src={footerLogoSrc}
                 alt="Excursions Greece"
-                className="h-[80px] w-auto "
+                className="h-[72px] w-auto max-w-[250px] object-contain sm:h-[80px] sm:max-w-[290px]"
               />
               <p className="max-w-md text-[18px] text-white/70">
                 Leading the way in luxury shore excursions and destination
@@ -945,7 +946,7 @@ export default function Home() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <span>
-                    Ακτή Μιαούλη 81, Πειραιάς 185 38
+                    Akti Miaouli 81 Pireas 185 38
                   </span>
                 </div>
               </div>
@@ -993,13 +994,31 @@ export default function Home() {
             <span>© 2025 Excursions Greece. All rights reserved.</span>
 
             <div className="flex gap-4">
-              <a href="#" className="hover:text-white">
+              <a
+                href="https://www.facebook.com/share/1L4Kakk8Ds/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on Facebook"
+                className="hover:text-white"
+              >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="hover:text-white">
+              <a
+                href="https://www.instagram.com/excursiongreece/?hl=en"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on Instagram"
+                className="hover:text-white"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="hover:text-white">
+              <a
+                href="https://www.linkedin.com/company/excursions-greece/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Excursions Greece on LinkedIn"
+                className="hover:text-white"
+              >
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>
