@@ -205,8 +205,7 @@ const regions = discoverRegionContent.map((region) => {
 });
 
 // Local Assets
-const headerLogoSrc = "/images/figma/logo-landscape.svg";
-const footerLogoSrc = "/images/figma/logo-landscape-footer.svg";
+const logoSrc = "/images/figma/logo-landscape.jpg";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -453,7 +452,7 @@ export default function Home() {
           <header className="flex items-center justify-between">
             <Link href="/" className="block">
               <img
-                src={headerLogoSrc}
+                src={logoSrc}
                 alt="Excursions Greece"
                 className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
               />
@@ -913,7 +912,7 @@ export default function Home() {
             {/* Contact Info */}
             <div className="space-y-8">
               <img
-                src={footerLogoSrc}
+                src={logoSrc}
                 alt="Excursions Greece"
                 className="h-[72px] w-auto max-w-[250px] object-contain sm:h-[80px] sm:max-w-[290px]"
               />

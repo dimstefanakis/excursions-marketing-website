@@ -101,7 +101,7 @@ export default function CompanyPage() {
       <header className={cn(wrap, "flex items-center justify-between py-6 lg:py-8")}>
         <Link href="/" className="block">
           <img
-            src="/images/figma/logo-landscape.svg"
+            src="/images/figma/logo-landscape.jpg"
             alt="Excursions Greece"
             className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
           />
@@ -361,7 +361,7 @@ export default function CompanyPage() {
             {/* Contact Info */}
             <div className="space-y-10">
               <img
-                src="/images/figma/logo-landscape-footer.svg"
+                src="/images/figma/logo-landscape.jpg"
                 alt="Excursions Greece"
                 className="h-[72px] w-auto max-w-[250px] object-contain sm:h-[80px] sm:max-w-[290px]"
               />
