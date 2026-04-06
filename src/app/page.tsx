@@ -256,6 +256,9 @@ const stats = [
 const companyLinks = [
   { label: "About Us", href: "/company" },
   { label: "Our Team", href: "/company" },
+  { label: "Staff", href: "/company/staff" },
+  { label: "Guides", href: "/company/guides" },
+  { label: "Supplier / Partner", href: "/company/supplier-partner" },
 ];
 
 const serviceLinks = [

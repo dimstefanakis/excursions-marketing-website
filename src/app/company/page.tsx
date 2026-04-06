@@ -405,6 +405,9 @@ export default function CompanyPage() {
               <ul className="space-y-5">
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">About Us</Link></li>
                 <li><Link href="/company" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Our Team</Link></li>
+                <li><Link href="/company/staff" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Staff</Link></li>
+                <li><Link href="/company/guides" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Guides</Link></li>
+                <li><Link href="/company/supplier-partner" className="text-[18px] text-white/80 transition-colors hover:text-[#96e0d9]">Supplier / Partner</Link></li>
               </ul>
             </div>
 
