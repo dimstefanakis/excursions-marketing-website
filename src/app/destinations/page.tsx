@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SiteLogoLockup } from "@/components/CertificationBadges";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -54,13 +55,9 @@ export default function DestinationsPage() {
   return (
     <div className="bg-white text-[#33305e] selection:bg-[#96e0d9] selection:text-[#33305e] font-[var(--font-manrope)]">
       {/* Header / Nav */}
-      <header className={cn(wrap, "flex items-center justify-between py-6 lg:py-8")}>
+      <header className={cn(wrap, "flex items-start justify-between gap-6 py-6 lg:py-8")}>
         <Link href="/" className="block">
-          <img
-            src="/images/figma/logo-landscape.jpg"
-            alt="Excursions Greece"
-            className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
-          />
+          <SiteLogoLockup />
         </Link>
 
         <nav className="hidden items-center gap-[40px] xl:gap-[60px] text-[16px] font-medium lg:flex lg:text-[18px]">
@@ -203,7 +200,7 @@ export default function DestinationsPage() {
               Each destination is supported by our expert local teams and comprehensive logistics network.
             </p>
             <Button asChild size="lg" className="h-[64px] px-10 bg-[#33305e] text-white hover:bg-[#51d2c6] transition-all duration-500 shadow-xl font-bold">
-              <Link href="/#contact">Request Custom Itinerary</Link>
+              <Link href="/contact">Request Custom Itinerary</Link>
             </Button>
           </div>
         </div>
@@ -223,7 +220,7 @@ export default function DestinationsPage() {
               ensures we remain at the forefront of delivering exceptional shore excursion services.
             </p>
             <Button asChild size="lg" className="h-[64px] px-10 bg-[#51d2c6] text-white hover:bg-[#33305e] transition-all duration-500 shadow-lg font-bold">
-              <Link href="/#contact">Learn More About Our Vision</Link>
+              <Link href="/contact">Learn More About Our Vision</Link>
             </Button>
           </div>
         </div>

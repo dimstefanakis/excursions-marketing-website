@@ -40,6 +40,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SiteLogoLockup } from "@/components/CertificationBadges";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -115,13 +116,9 @@ export default function ContactPage() {
   return (
     <div className="bg-white text-[#33305e] selection:bg-[#96e0d9] selection:text-[#33305e] font-[var(--font-manrope)]">
       {/* Header / Nav */}
-      <header className={cn(wrap, "flex items-center justify-between py-6 lg:py-8")}>
+      <header className={cn(wrap, "flex items-start justify-between gap-6 py-6 lg:py-8")}>
         <Link href="/" className="block">
-          <img
-            src="/images/figma/logo-landscape.jpg"
-            alt="Excursions Greece"
-            className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
-          />
+          <SiteLogoLockup />
         </Link>
 
         <nav className="hidden items-center gap-[40px] xl:gap-[60px] text-[16px] font-medium lg:flex lg:text-[18px]">

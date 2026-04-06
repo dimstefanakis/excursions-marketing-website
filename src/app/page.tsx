@@ -28,6 +28,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
+import {
+  SiteLogoLockup,
+  TravelifeCertificationBadge,
+} from "@/components/CertificationBadges";
 import { cn } from "@/lib/utils";
 import { InfiniteCarousel } from "@/components/InfiniteCarousel";
 
@@ -449,13 +453,9 @@ export default function Home() {
           className={`${wrap} relative min-h-[720px] lg:min-h-screen min-[1780px]:min-h-[968px] pt-6 lg:pt-8`}
         >
           {/* Header / Nav */}
-          <header className="flex items-center justify-between">
+          <header className="flex items-start justify-between gap-6">
             <Link href="/" className="block">
-              <img
-                src={logoSrc}
-                alt="Excursions Greece"
-                className="h-[52px] w-auto max-w-[210px] object-contain sm:h-[64px] sm:max-w-[260px] lg:h-[92px] lg:max-w-[360px]"
-              />
+              <SiteLogoLockup logoClassName="max-w-[210px] sm:max-w-[260px] lg:max-w-[360px]" />
             </Link>
 
             <nav className="hidden items-center gap-[40px] xl:gap-[60px] text-[16px] font-medium lg:flex lg:text-[18px]">
@@ -547,8 +547,8 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="mt-[40px] relative overflow-hidden bg-[#96e0d9]/10 lg:mt-auto shadow-2xl shadow-[#33305e]/5">
-                  <MapboxMap animated className="h-[320px] w-full sm:h-[420px] lg:h-[clamp(320px,40vh,500px)] min-[1780px]:h-[500px]" />
+                <div className="mt-[40px] relative overflow-hidden bg-[#96e0d9]/10 shadow-2xl shadow-[#33305e]/5 lg:min-h-[360px] lg:flex-1 xl:min-h-[400px]">
+                  <MapboxMap animated className="h-[320px] w-full sm:h-[420px] lg:h-full" />
 
                   {/* Animated port counter */}
                   <div className="absolute bottom-[24px] right-[24px] z-10 bg-[#33305e]/80 backdrop-blur-sm px-4 py-2 text-white text-sm font-semibold" style={{ animation: "counter-fade-in 0.5s ease-out 1s both" }}>
@@ -900,6 +900,7 @@ export default function Home() {
             <h2 className="font-[var(--font-syne)] text-[36px] font-bold sm:text-[48px]">
               Travelife Certified Partner
             </h2>
+            <TravelifeCertificationBadge className="mx-auto mt-8" />
             <p className="mt-6 text-[16px] text-white/60 max-w-2xl mx-auto">
               For questions and remarks related to our sustainability and CSR policies, please contact us at{" "}
               <a href="mailto:operations@excursionsgreece.com" className="text-[#96e0d9] hover:underline">
