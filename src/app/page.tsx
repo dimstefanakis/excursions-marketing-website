@@ -27,11 +27,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
+import { MapboxMap } from "@/components/mapbox/MapboxMap";
 import {
   SiteLogoLockup,
   TravelifeCertificationBadge,
 } from "@/components/CertificationBadges";
+import { PORTS } from "@/lib/ports";
 import { cn } from "@/lib/utils";
 import { InfiniteCarousel } from "@/components/InfiniteCarousel";
 

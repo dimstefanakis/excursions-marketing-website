@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { MapPin, Mail, Phone, Facebook, Instagram, Linkedin, Menu } from "lucide-react";
 
-import { MapboxMap, PORTS } from "@/components/mapbox/MapboxMap";
+import { MapboxMap } from "@/components/mapbox/MapboxMap";
+import { PortChatButton, PortChatDrawer } from "@/components/PortChatDrawer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SiteLogoLockup } from "@/components/CertificationBadges";
+import { PORTS } from "@/lib/ports";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -31,6 +34,8 @@ const navCta = {
 const wrap = "w-full px-[24px] sm:px-[40px] lg:px-[60px] 2xl:px-[80px]";
 
 export default function DestinationsPage() {
+  const [selectedPort, setSelectedPort] = useState<(typeof PORTS)[number] | null>(null);
+
   const portsByRegion = PORTS.reduce<Record<string, (typeof PORTS)[number][]>>(
     (acc, port) => {
       if (!acc[port.region]) {
@@ -188,6 +193,10 @@ export default function DestinationsPage() {
                       <p className="text-[14px] text-[#33305e]/60 font-medium uppercase tracking-widest group-hover:text-white/60 transition-colors">
                         {port.category}
                       </p>
+                      <PortChatButton
+                        onClick={() => setSelectedPort(port)}
+                        portName={port.name}
+                      />
                     </div>
                   ))}
                 </div>
@@ -333,6 +342,11 @@ export default function DestinationsPage() {
           </div>
         </div>
       </footer>
+
+      <PortChatDrawer
+        onClose={() => setSelectedPort(null)}
+        port={selectedPort}
+      />
     </div>
   );
 }
