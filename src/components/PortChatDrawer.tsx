@@ -1,6 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  FormEvent,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Loader2, MessageCircle, Send, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -29,6 +36,66 @@ const getInitialMessage = (port: Port): ChatMessage => ({
   role: "assistant",
   content: `Ask me about ${port.name}: shore excursion ideas, timing, highlights, transfers, or guest fit.`,
 });
+
+const renderInlineContent = (text: string) =>
+  text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong className="font-bold" key={`${part}-${index}`}>
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+
+    return part;
+  });
+
+const renderMessageContent = (content: string) => {
+  const blocks: ReactNode[] = [];
+  let bulletItems: string[] = [];
+
+  const flushBullets = () => {
+    if (bulletItems.length === 0) return;
+
+    blocks.push(
+      <ul
+        className="list-disc space-y-1 pl-5 marker:text-[#51d2c6]"
+        key={`bullets-${blocks.length}`}
+      >
+        {bulletItems.map((item, index) => (
+          <li key={`${item}-${index}`}>{renderInlineContent(item)}</li>
+        ))}
+      </ul>,
+    );
+    bulletItems = [];
+  };
+
+  content.split("\n").forEach((line) => {
+    const trimmedLine = line.trim();
+    const bulletMatch = trimmedLine.match(/^[-*•]\s+(.+)$/);
+
+    if (!trimmedLine) {
+      flushBullets();
+      return;
+    }
+
+    if (bulletMatch) {
+      bulletItems.push(bulletMatch[1]);
+      return;
+    }
+
+    flushBullets();
+    blocks.push(
+      <p key={`paragraph-${blocks.length}`}>
+        {renderInlineContent(trimmedLine)}
+      </p>,
+    );
+  });
+
+  flushBullets();
+
+  return <div className="space-y-2">{blocks}</div>;
+};
 
 export function PortChatDrawer({ port, onClose }: PortChatDrawerProps) {
   const [draft, setDraft] = useState("");
@@ -223,7 +290,7 @@ export function PortChatDrawer({ port, onClose }: PortChatDrawerProps) {
                     : "border border-[#33305e]/10 bg-white text-[#33305e]",
                 )}
               >
-                {message.content}
+                {renderMessageContent(message.content)}
               </div>
             </div>
           ))}
